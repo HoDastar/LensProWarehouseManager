@@ -58,6 +58,7 @@ function getRendererConfig() {
 }
 
 async function checkVersion() {
+  try {
   const respond = await fetch(getUrl() + "/api/config/get_version");
   const result = await respond.json();
   console.log(result);
@@ -67,6 +68,9 @@ async function checkVersion() {
   
   const buildSQL = result.data
   if (buildSQL > BUILD) {
+    return false;
+  }
+  } catch (error) {
     return false;
   }
 
