@@ -277,8 +277,6 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dom-to-image"></script>
   <script>
-    const url = "http://192.168.0.3:8081";
-
     function getQueryParam(name) {
       return new URLSearchParams(window.location.search).get(name) || "";
     }
@@ -301,7 +299,7 @@
 
       return await Promise.all(goods.map(async (goodsId) => {
         const id = goodsId == null ? "" : String(goodsId);
-        const response = await getApi(`${url}/api/warehouse/get_item?id=${encodeURIComponent(id)}`);
+        const response = await getApi(`${window.location.origin}/api/warehouse/get_item?id=${encodeURIComponent(id)}`);
 
         if (!response || response.result !== true || !response.data) {
           return {
