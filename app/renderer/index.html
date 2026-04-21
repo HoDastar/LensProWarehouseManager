@@ -43,10 +43,13 @@
                         class="fa-solid fa-clipboard-list"></i><span>出库列表</span></button>
                 <button class="toolbar-button" type="button" data-page="outboundPage"><i
                         class="fa-solid fa-arrow-up-from-bracket"></i><span>出库</span></button>
+                <button class="toolbar-button" type="button" data-page="inboundPage"><i
+                        class="fa-solid fa-arrow-right-to-bracket"></i><span>入库</span></button>
                 </div>
                         <div class="hr" style="margin: 0;"></div>
                 <button class="toolbar-button" type="button" data-page="passwordPage"><i
                         class="fa-solid fa-key"></i><span>修改密码</span></button>
+                        
                 <button class="toolbar-button toolbar-about-button" type="button" data-page="aboutPage"><i
                         class="fa-solid fa-circle-info"></i><span>关于</span></button>
             </nav>
@@ -55,7 +58,7 @@
         <main class="app-content">
 
             <section class="page-view is-active" id="overviewPage">
-                <h1 class="page-title">概览</h1>
+                <h1 class="page-title"><i class="fa-solid fa-chart-simple"></i> 概览</h1>
                 <div class="overview-panel">
                     <div class="overview-grid">
                         <div class="overview-card">
@@ -87,7 +90,7 @@
             </section>
 
             <section class="page-view" id="inventoryPage">
-                <h1 class="page-title">库存浏览</h1>
+                <h1 class="page-title"><i class="fa-solid fa-boxes-stacked"></i> 库存浏览</h1>
                 <div class="inventory-panel">
                     <div class="inventory-filter" id="inventoryTagFilter"></div>
                     <div class="inventory-batch-actions">
@@ -127,7 +130,7 @@
                 </div>
             </section>
             <section class="page-view" id="outboundListPage">
-                <h1 class="page-title">出库列表</h1>
+                <h1 class="page-title"><i class="fa-solid fa-clipboard-list"></i> 出库列表</h1>
                 <div class="inventory-panel">
                     <div class="bordered-table-wrap">
                         <table class="bordered-table outbound-report-table">
@@ -153,7 +156,7 @@
                 </div>
             </section>
             <section class="page-view" id="outboundPage">
-                <h1 class="page-title">出库</h1>
+                <h1 class="page-title"><i class="fa-solid fa-arrow-up-from-bracket"></i> 出库</h1>
                 <div class="form-layout">
                     <div>
                         <h2 class="form-section-title">通过项目ID添加</h2>
@@ -225,8 +228,94 @@
                     </div>
                 </div>
             </section>
+            <section class="page-view" id="inboundPage">
+                <h1 class="page-title"><i class="fa-solid fa-arrow-right-to-bracket"></i> 入库</h1>
+                <div class="form-layout">
+                    <div>
+                        <h2 class="form-section-title">通过订单ID查询</h2>
+                        <div class="form-row">
+                            <div>
+                                <p class="form-label-title">订单ID</p>
+                                <p class="form-label-desc">输入出库订单 ID 后加载订单信息。</p>
+                            </div>
+                            <input class="text-input" id="inboundQueryOrderIdInput" type="text" placeholder="例如：OR839514874219296563">
+                        </div>
+                        <div class="form-submit">
+                            <button class="common-button" id="inboundQuerySubmitButton" type="button">查询</button>
+                        </div>
+                    </div>
+
+                    <div class="hr"></div>
+
+                    <div>
+                        <h2 class="form-section-title">上传文件</h2>
+                        <div class="outbound-upload-panel">
+                            <div>
+                                <p class="form-label-title">队列中的文件数</p>
+                                <p class="outbound-upload-count" id="inboundUploadFileCount">0</p>
+                            </div>
+                            <div class="outbound-upload-actions">
+                                <button class="common-button" id="inboundUploadOpenButton" type="button">上传</button>
+                                <button class="common-button" id="inboundUploadRefreshButton" type="button">刷新</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hr"></div>
+
+                    <div>
+                        <h2 class="form-section-title">订单信息</h2>
+                        <div class="compact-form">
+                            <div class="compact-form-row">
+                                <label class="compact-field">
+                                    <span class="compact-label">订单ID</span>
+                                    <span class="inbound-readonly-value" id="inboundOrderIdText">-</span>
+                                </label>
+                                <label class="compact-field">
+                                    <span class="compact-label">姓名</span>
+                                    <span class="inbound-readonly-value" id="inboundUsernameText">-</span>
+                                </label>
+                                <label class="compact-field">
+                                    <span class="compact-label">电话号码</span>
+                                    <span class="inbound-readonly-value" id="inboundTelText">-</span>
+                                </label>
+                            </div>
+                            <div class="compact-form-row">
+                                <label class="compact-field">
+                                    <span class="compact-label">开始日期</span>
+                                    <span class="inbound-readonly-value" id="inboundStartDateText">-</span>
+                                </label>
+                                <label class="compact-field">
+                                    <span class="compact-label">截止日期</span>
+                                    <span class="inbound-readonly-value" id="inboundEndDateText">-</span>
+                                </label>
+                                <label class="compact-field">
+                                    <span class="compact-label">状态</span>
+                                    <span class="inbound-readonly-value" id="inboundStatusText">-</span>
+                                </label>
+                            </div>
+                            <div class="compact-form-row">
+                                <label class="compact-field is-wide">
+                                    <span class="compact-label">备注</span>
+                                    <textarea class="textarea-input" id="inboundNoteInput" placeholder="可空"></textarea>
+                                </label>
+                            </div>
+                            <div class="compact-form-actions">
+                                <button class="common-button" id="inboundFinishButton" type="button"><span>完结订单</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hr"></div>
+
+                    <div>
+                        <h2 class="form-section-title">入库队列</h2>
+                        <div class="outbound-queue" id="inboundQueueList"></div>
+                    </div>
+                </div>
+            </section>
             <section class="page-view" id="addPage">
-                <h1 class="page-title">新增项目</h1>
+                <h1 class="page-title"><i class="fa-solid fa-plus"></i> 新增项目</h1>
                 <div class="form-layout">
                     <div class="form-row">
                         <div>
@@ -282,7 +371,7 @@
                 </div>
             </section>
             <section class="page-view" id="aboutPage">
-                <h1 class="page-title">关于</h1>
+                <h1 class="page-title"><i class="fa-solid fa-circle-info"></i> 关于</h1>
                 <div class="about-panel">
                     <img class="about-icon" src="../icon.png" alt="软件图标">
                     <h2 class="about-name">LensPro库管系统</h2>
@@ -291,7 +380,7 @@
                 </div>
             </section>
             <section class="page-view" id="passwordPage">
-                <h1 class="page-title">修改密码</h1>
+                <h1 class="page-title"><i class="fa-solid fa-key"></i> 修改密码</h1>
                 <div class="form-layout">
                     <div class="form-row">
                         <div>
@@ -320,7 +409,7 @@
                 </div>
             </section>
             <section class="page-view" id="modifyPage">
-                <h1 class="page-title">修改项目</h1>
+                <h1 class="page-title"><i class="fa-solid fa-pen-to-square"></i> 修改项目</h1>
                 <div class="form-layout">
                     <div>
                         <h2 class="form-section-title">通过项目ID查询</h2>
@@ -442,6 +531,8 @@
         };
         window.outboundReportAllData = [];
         window.outboundQueue = [];
+        window.currentInboundReport = null;
+        window.inboundQueue = [];
 
         let token = "";
         let appVersion = "";
@@ -572,7 +663,7 @@
                 return {
                     text: "已到期",
                     className: "is-expired",
-                    remainingDays: 0
+                    remainingDays: diffDays
                 };
             }
             if (diffDays <= 3) {
@@ -616,7 +707,7 @@
 
                 var finishButton = row.querySelector(".outbound-finish-button");
                 finishButton.addEventListener("click", function () {
-                    window.handleFinishOutboundReport(report.id, finishButton);
+                    window.openInboundPageWithOrder(report.id);
                 });
                 row.querySelector(".outbound-report-button").addEventListener("click", async function () {
                     if (!report.id) {
@@ -1458,6 +1549,245 @@
             }
         };
 
+        function parseOutboundGoodsList(goods) {
+            if (Array.isArray(goods)) {
+                return goods;
+            }
+            if (typeof goods !== "string" || !goods.trim()) {
+                return [];
+            }
+
+            try {
+                var parsed = JSON.parse(goods);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                return goods.split(",").map(function (item) {
+                    return item.trim();
+                }).filter(Boolean);
+            }
+        }
+
+        function findOutboundReportById(orderId) {
+            return window.outboundReportAllData.find(function (report) {
+                return String(report.id) === String(orderId);
+            }) || null;
+        }
+
+        window.fetchOutboundReportById = async function fetchOutboundReportById(orderId) {
+            if (!orderId) {
+                return null;
+            }
+
+            const detailResult = await getApi(`${url}/api/outbound_report/get_report?id=${encodeURIComponent(orderId)}`);
+            if (detailResult && detailResult.result !== false) {
+                var detailData = normalizeApiData(detailResult, null);
+                if (Array.isArray(detailData)) {
+                    var matchedDetail = detailData.find(function (report) {
+                        return String(report.id) === String(orderId);
+                    });
+                    if (matchedDetail) {
+                        return matchedDetail;
+                    }
+                } else if (detailData && String(detailData.id) === String(orderId)) {
+                    return detailData;
+                }
+            }
+
+            if (!window.outboundReportAllData.length) {
+                await window.fetchOutboundReportData();
+            }
+            return findOutboundReportById(orderId);
+        };
+
+        function resetInboundOrderView() {
+            window.currentInboundReport = null;
+            window.inboundQueue = [];
+            document.getElementById("inboundOrderIdText").textContent = "-";
+            document.getElementById("inboundUsernameText").textContent = "-";
+            document.getElementById("inboundTelText").textContent = "-";
+            document.getElementById("inboundStartDateText").textContent = "-";
+            document.getElementById("inboundEndDateText").textContent = "-";
+            document.getElementById("inboundStatusText").textContent = "-";
+            renderInboundQueue();
+        }
+
+        function fillInboundOrderView(report) {
+            window.currentInboundReport = report;
+            window.inboundQueue = parseOutboundGoodsList(report.goods);
+            var statusInfo = getOutboundReportStatus(report);
+            document.getElementById("inboundOrderIdText").textContent = report.id || "-";
+            document.getElementById("inboundUsernameText").textContent = report.username || "-";
+            document.getElementById("inboundTelText").textContent = report.tel || "-";
+            document.getElementById("inboundStartDateText").textContent = report.start_time || "-";
+            document.getElementById("inboundEndDateText").textContent = report.endTime || report.end_time || "-";
+            document.getElementById("inboundStatusText").textContent = statusInfo.text;
+            renderInboundQueue();
+        }
+
+        async function hydrateInboundQueueItems() {
+            if (!window.inboundQueue.length) {
+                return [];
+            }
+
+            var hydratedItems = [];
+            for (var index = 0; index < window.inboundQueue.length; index += 1) {
+                var item = window.inboundQueue[index];
+                if (typeof item === "object" && item !== null) {
+                    hydratedItems.push(item);
+                    continue;
+                }
+
+                var fetchedItem = await fetchInventoryItemById(item, true);
+                hydratedItems.push(fetchedItem || item);
+            }
+
+            window.inboundQueue = hydratedItems;
+            renderInboundQueue();
+            return hydratedItems;
+        }
+
+        window.loadInboundUploadFileCount = async function loadInboundUploadFileCount() {
+            var countEl = document.getElementById("inboundUploadFileCount");
+            if (!countEl) {
+                return 0;
+            }
+
+            countEl.textContent = "加载中";
+            const result = await getApi(`${url}/api/attachment/get_photos`);
+            if (!result.result || !Array.isArray(result.data)) {
+                countEl.textContent = "0";
+                Showbubble(result.msg || "上传文件数加载失败", "#d90000", "#ffffff");
+                return 0;
+            }
+
+            countEl.textContent = String(result.data.length);
+            return result.data.length;
+        };
+
+        window.openInboundPageWithOrder = async function openInboundPageWithOrder(orderId) {
+            if (!orderId) {
+                Showbubble("订单ID不存在", "#d90000", "#ffffff");
+                return null;
+            }
+
+            showPage("inboundPage");
+            document.getElementById("inboundQueryOrderIdInput").value = orderId;
+            await window.loadInboundUploadFileCount();
+            return window.handleQueryInboundOrder();
+        };
+
+        window.handleQueryInboundOrder = async function handleQueryInboundOrder() {
+            var orderId = document.getElementById("inboundQueryOrderIdInput").value.trim();
+            if (!orderId) {
+                Showbubble("请填写订单ID", "#d90000", "#ffffff");
+                return null;
+            }
+
+            var report = await window.fetchOutboundReportById(orderId);
+            if (!report) {
+                resetInboundOrderView();
+                Showbubble("订单不存在", "#d90000", "#ffffff");
+                return null;
+            }
+
+            if (Number(report.status) === 1) {
+                Showbubble("订单已完结", "#d90000", "#ffffff");
+            }
+            fillInboundOrderView(report);
+            await hydrateInboundQueueItems();
+            Showbubble("查询成功", "#32cd32", "#fff");
+            return report;
+        };
+
+        function renderInboundQueue() {
+            var queueRoot = document.getElementById("inboundQueueList");
+            if (!queueRoot) {
+                return;
+            }
+
+            queueRoot.innerHTML = "";
+            if (!window.inboundQueue.length) {
+                var empty = document.createElement("div");
+                empty.className = "outbound-empty";
+                empty.textContent = "暂无入库项目";
+                queueRoot.append(empty);
+                return;
+            }
+
+            window.inboundQueue.forEach(function (item) {
+                var itemId = typeof item === "object" && item !== null ? item.id : item;
+                var row = document.createElement("div");
+                var listText = typeof item === "object" && item !== null ? getInventoryListText(item.list) : "";
+                row.className = "outbound-queue-item";
+                row.innerHTML = `
+                    <div class="outbound-queue-id">${itemId || ""}</div>
+                    <div class="outbound-queue-grid inbound-queue-grid">
+                        <div class="outbound-queue-main">
+                            <img class="outbound-queue-thumbnail" src="${getInventoryThumbnailUrl(item && item.thumbnail)}" alt="${item && item.name ? item.name : itemId}">
+                            <div class="outbound-queue-info">
+                                <div class="outbound-queue-name">${item && item.name ? item.name : "订单项目"}</div>
+                                <div class="outbound-queue-note">${item && item.note ? item.note : "无备注"}</div>
+                            </div>
+                        </div>
+                        <div class="outbound-queue-list">${listText ? "• " + listText.replace(/\n/g, "\n• ") : "无清单信息"}</div>
+                    </div>
+                `;
+                queueRoot.append(row);
+            });
+        }
+
+        window.handleFinishInboundReport = async function handleFinishInboundReport() {
+            var report = window.currentInboundReport;
+            var finishButton = document.getElementById("inboundFinishButton");
+            var note = document.getElementById("inboundNoteInput").value.trim();
+
+            if (!report || !report.id) {
+                Showbubble("请先查询订单", "#d90000", "#ffffff");
+                return null;
+            }
+            if (Number(report.status) === 1) {
+                Showbubble("订单已完结", "#d90000", "#ffffff");
+                return null;
+            }
+            if (note.length > 100) {
+                Showbubble("备注不能超过 100 字", "#d90000", "#ffffff");
+                return null;
+            }
+
+            var confirmed = await openModal("确认完结", "是否完结订单 " + report.id + "？");
+            if (!confirmed) {
+                return null;
+            }
+
+            finishButton.disabled = true;
+            finishButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>完结中</span>';
+            try {
+                const result = await postApi(`${url}/api/inbound_report/finish_order`, {
+                    id: report.id,
+                    token: token,
+                    note: note
+                });
+                if (!result.result) {
+                    await openModal("警告", result.msg || "完结失败");
+                    return null;
+                }
+
+                document.getElementById("inboundNoteInput").value = "";
+                Showbubble(result.msg || "订单已完结", "#32cd32", "#fff");
+                await window.loadOutboundReportData();
+                await window.loadInventoryData();
+                var refreshed = findOutboundReportById(report.id);
+                if (refreshed) {
+                    fillInboundOrderView(refreshed);
+                    await hydrateInboundQueueItems();
+                }
+                return result;
+            } finally {
+                finishButton.disabled = false;
+                finishButton.innerHTML = "<span>完结订单</span>";
+            }
+        };
+
         function renderOutboundQueue() {
             var queueRoot = document.getElementById("outboundQueueList");
             if (!queueRoot) {
@@ -1687,6 +2017,9 @@
                     if (button.dataset.page === "outboundPage") {
                         window.loadOutboundUploadFileCount();
                     }
+                    if (button.dataset.page === "inboundPage") {
+                        window.loadInboundUploadFileCount();
+                    }
                 });
             });
         }
@@ -1765,6 +2098,18 @@
             document.getElementById("outboundUploadRefreshButton").addEventListener("click", async function () {
                 await window.loadOutboundUploadFileCount();
             });
+            document.getElementById("inboundUploadOpenButton").addEventListener("click", async function () {
+                await window.openOutboundUploadPage();
+            });
+            document.getElementById("inboundUploadRefreshButton").addEventListener("click", async function () {
+                await window.loadInboundUploadFileCount();
+            });
+            document.getElementById("inboundQuerySubmitButton").addEventListener("click", async function () {
+                await window.handleQueryInboundOrder();
+            });
+            document.getElementById("inboundFinishButton").addEventListener("click", async function () {
+                await window.handleFinishInboundReport();
+            });
             document.getElementById("inventoryAddOutboundButton").addEventListener("click", async function () {
                 await window.handleAddSelectedInventoryToOutboundQueue();
             });
@@ -1809,7 +2154,9 @@
                 renderOutboundQueue();
             });
             renderOutboundQueue();
+            renderInboundQueue();
             window.loadOutboundUploadFileCount();
+            window.loadInboundUploadFileCount();
         });
     </script>
 </body>

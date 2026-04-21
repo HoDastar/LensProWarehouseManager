@@ -38,7 +38,7 @@ SELECT * FROM warehouse_warehouse
         </foreach>
     </if>
 </where>
-ORDER BY id DESC
+ORDER BY time DESC, id DESC
 </script>
 """)
     List<EntityWarehouse> getWarehouseList2(

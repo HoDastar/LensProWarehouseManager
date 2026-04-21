@@ -51,5 +51,4 @@ public interface OutBoundReportMapper {
             @Param("status") int status,
             @Param("id") String id
     );
-
 }

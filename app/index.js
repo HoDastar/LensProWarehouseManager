@@ -11,6 +11,13 @@ app.commandLine.appendSwitch("disable-software-rasterizer");
 app.commandLine.appendSwitch("no-sandbox");
 
 app.whenReady().then(async () => {
+  // 测试连接服务器
+  try {
+    await fetch(config.getUrl());
+  } catch {
+    dialog.showErrorBox("错误", "服务器连接失败，请稍后重试。");
+    app.quit();
+  }
   // 验证版本
   const checkVersionResult = await config.checkVersion();
   if (!checkVersionResult) {
