@@ -1,5 +1,5 @@
 {
-  "name": "warehouseManager",
+  "name": "warehousemanager",
   "version": "0.0",
   "description": "",
   "license": "ISC",
@@ -12,6 +12,37 @@
   "dependencies": {
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
+  },
+  "build": {
+    "asar": true,
+    "appId": "com.reclight.warehousemanagerapp",
+    "productName": "LensPro库管系统",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
   },
   "devDependencies": {
     "electron": "file:_electron-37.5.0.tgz",
