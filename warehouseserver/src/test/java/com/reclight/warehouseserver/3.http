@@ -1,0 +1,1 @@
+GET http://localhost:8080/api/config/check_token?token=ed10e2e0480cb003532120a2cc7bbf22c8c80870e0648c61de988280418db425

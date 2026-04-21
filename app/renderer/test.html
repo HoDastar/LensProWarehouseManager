@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>器材管理系统模板</title>
+  <link rel="stylesheet" href="./assets/root.css">
+  <link rel="stylesheet" href="./assets/window.css">
+  <link rel="stylesheet" href="./assets/form.css">
+  <style>
+    .demo-page {
+      width: min(980px, calc(100vw - 40px));
+      padding: 46px 0;
+    }
+
+    .demo-title {
+      margin: 0 0 10px;
+      color: var(--color-black);
+      font-size: 30px;
+      line-height: 1.25;
+    }
+
+    .demo-desc {
+      margin: 0 0 34px;
+      color: var(--color-gray-600);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .demo-section {
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: var(--radius-medium);
+    }
+
+    .demo-section-title {
+      margin: 0 0 18px;
+      color: var(--color-black);
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .demo-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="demo-page">
+    <h1 class="demo-title">器材管理系统前端模板</h1>
+    <p class="demo-desc">黑白灰阶基础控件、弹窗、气泡提示、Tooltip、文本输入、文件上传和默认表单结构。</p>
+
+    <section class="demo-section">
+      <h2 class="demo-section-title">窗口组件</h2>
+      <div class="demo-actions">
+        <button class="common-button" id="modalDemo" data-tip="await openModal(title, text)">打开确认弹窗</button>
+        <button class="common-button" id="bubbleDemo" data-tip="Showbubble(text, bgColor, textColor)">显示气泡弹窗</button>
+        <button class="common-button" data-tip="这是使用 data-tip 的自定义文字提示">悬停查看 Tooltip</button>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="demo-section-title">默认表单结构</h2>
+      <div class="form-layout">
+        <div class="form-row">
+          <div>
+            <p class="form-label-title">器材名称</p>
+            <p class="form-label-desc">录入器材的标准名称，便于后续检索。</p>
+          </div>
+          <input class="text-input" type="text" placeholder="例如：无线麦克风" data-tip="文本框 focus 后会出现灰色辉光">
+        </div>
+
+        <div class="form-row">
+          <div>
+            <p class="form-label-title">存放位置</p>
+            <p class="form-label-desc">填写仓库、货架或房间编号。</p>
+          </div>
+          <input class="text-input" type="text" placeholder="例如：A 仓 03 货架">
+        </div>
+
+        <div class="form-row">
+          <div>
+            <p class="form-label-title">附件上传</p>
+            <p class="form-label-desc">用于上传器材图片、说明书或验收文件。</p>
+          </div>
+          <label class="input-file">
+            <span class="common-button input-file-button">选择文件</span>
+            <span class="input-file-text" id="fileText">请上传文件</span>
+            <input id="fileInput" type="file">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="demo-section-title">紧凑表单结构</h2>
+      <div class="compact-form">
+        <div class="compact-form-row">
+          <label class="compact-field">
+            <span class="compact-label">器材编号</span>
+            <input class="text-input" type="text" placeholder="EQ-001">
+          </label>
+          <label class="compact-field">
+            <span class="compact-label">器材名称</span>
+            <input class="text-input" type="text" placeholder="无线麦克风">
+          </label>
+          <label class="compact-field">
+            <span class="compact-label">存放位置</span>
+            <input class="text-input" type="text" placeholder="A 仓 03 货架">
+          </label>
+        </div>
+
+        <div class="compact-form-row">
+          <label class="compact-field">
+            <span class="compact-label">类型</span>
+            <input class="text-input" type="text" placeholder="摄影器材">
+          </label>
+          <label class="compact-field">
+            <span class="compact-label">归属</span>
+            <input class="text-input" type="text" placeholder="学校">
+          </label>
+          <label class="compact-field">
+            <span class="compact-label">数量</span>
+            <input class="text-input" type="number" min="0" value="1">
+          </label>
+        </div>
+
+        <div class="compact-form-row">
+          <label class="compact-field is-wide">
+            <span class="compact-label">备注</span>
+            <textarea class="textarea-input" placeholder="配件完整，状态良好"></textarea>
+          </label>
+        </div>
+
+        <div class="compact-form-actions">
+          <button class="common-button" type="button">提交</button>
+          <button class="common-button" type="button">清除</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2 class="demo-section-title">表格与复选框</h2>
+      <div class="bordered-table-wrap">
+        <table class="bordered-table">
+          <thead>
+            <tr>
+              <th>选择</th>
+              <th>器材编号</th>
+              <th>器材名称</th>
+              <th>库存状态</th>
+              <th>存放位置</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label class="check-box">
+                  <input type="checkbox" checked>
+                  <span class="check-box-mark"></span>
+                </label>
+              </td>
+              <td>EQ-001</td>
+              <td>无线麦克风</td>
+              <td>可借用</td>
+              <td>A 仓 03 货架</td>
+            </tr>
+            <tr>
+              <td>
+                <label class="check-box">
+                  <input type="checkbox">
+                  <span class="check-box-mark"></span>
+                </label>
+              </td>
+              <td>EQ-002</td>
+              <td>投影仪</td>
+              <td>维护中</td>
+              <td>B 仓 01 货架</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/window.js"></script>
+  <script>
+    document.getElementById("modalDemo").addEventListener("click", async function () {
+      var result = await openModal("确认操作", "是否确认提交当前器材信息？");
+      Showbubble(result ? "已确认" : "已取消", result ? "#32cd32" : "#d90000", "#ffffff");
+    });
+
+    document.getElementById("bubbleDemo").addEventListener("click", function () {
+      Showbubble("器材状态已更新", "#000000", "#ffffff");
+      Showbubble("库存数量正常", "#32cd32", "#fff");
+    });
+
+    document.getElementById("fileInput").addEventListener("change", function (event) {
+      var file = event.target.files[0];
+      document.getElementById("fileText").textContent = file ? file.name : "请上传文件";
+    });
+  </script>
+</body>
+</html>

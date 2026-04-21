@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LensPro库管上传附件</title>
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="./assets/root.css">
+  <link rel="stylesheet" href="./assets/windows.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--color-page);
+    }
+
+    .upload-page {
+      width: min(760px, 100%);
+      min-height: 100vh;
+      padding: 34px 28px 42px;
+      text-align: left;
+    }
+
+    .upload-title {
+      margin: 0 0 24px;
+      color: var(--color-black);
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .upload-title strong {
+      font-weight: 900;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+      max-width: 360px;
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      color: var(--color-gray-700);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .text-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      color: var(--color-black);
+      background: var(--color-white);
+      font: inherit;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .text-input:focus {
+      border-color: var(--color-gray-700);
+      box-shadow: var(--shadow-focus);
+    }
+
+    .upload-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: min(520px, 100%);
+      height: 180px;
+      margin: 0 0 22px;
+      border: 1px dashed var(--color-gray-400);
+      border-radius: var(--radius-medium);
+      color: var(--color-gray-700);
+      background: var(--color-gray-200);
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .upload-picker:hover {
+      border-color: var(--color-gray-700);
+      background: var(--color-gray-100);
+    }
+
+    .upload-picker:active {
+      transform: scale(0.99);
+    }
+
+    .upload-plus {
+      font-size: 58px;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .preview-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      width: min(680px, 100%);
+      margin: 0 0 24px;
+    }
+
+    .preview-item {
+      position: relative;
+      min-width: 0;
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      background: var(--color-white);
+      object-fit: cover;
+      display: block;
+    }
+
+    .file-status {
+      margin: 8px 0 7px;
+      color: var(--color-gray-600);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .preview-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border: 1px solid var(--color-black);
+      border-radius: var(--radius-small);
+      color: var(--color-white);
+      background: var(--color-black);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: var(--shadow-common);
+    }
+
+    .preview-remove:disabled {
+      border-color: var(--color-gray-400);
+      color: var(--color-gray-600);
+      background: var(--color-gray-200);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .file-status.is-success {
+      color: var(--color-success-dark);
+    }
+
+    .file-status.is-failed {
+      color: var(--color-danger);
+    }
+
+    .progress {
+      width: 100%;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--color-gray-200);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--color-black);
+      transition: width 0.18s ease;
+    }
+
+    .upload-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .upload-submit,
+    .clear-submit,
+    .clean-all-submit,
+    .refresh-submit {
+      min-width: 96px;
+      min-height: 36px;
+      padding: 8px 14px;
+    }
+
+    .remote-section {
+      width: min(680px, 100%);
+      margin-top: 34px;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      color: var(--color-black);
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .remote-empty {
+      margin: 0;
+      color: var(--color-gray-600);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .remote-preview-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .remote-thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      background: var(--color-white);
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 560px) {
+      .upload-page {
+        padding: 24px 16px 34px;
+      }
+
+      .upload-title {
+        font-size: 22px;
+      }
+
+      .upload-picker {
+        height: 150px;
+      }
+
+      .preview-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .remote-preview-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .upload-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .upload-submit,
+      .clear-submit,
+      .clean-all-submit,
+      .refresh-submit {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="upload-page">
+    <h1 class="upload-title"><strong>LensPro库管</strong>上传附件</h1>
+
+    <label class="upload-picker" for="fileInput" aria-label="选择图片">
+      <span class="upload-plus">+</span>
+    </label>
+    <input class="file-input" id="fileInput" type="file" accept=".jpg,.png,.jpeg,.webp,image/jpeg,image/png,image/webp" multiple>
+
+    <section class="preview-list" id="previewList" aria-label="选定文件预览"></section>
+
+    <div class="upload-actions">
+      <button class="common-button upload-submit" id="uploadButton" type="button">上传</button>
+      <button class="common-button clear-submit" id="clearButton" type="button">清除队列</button>
+      <button class="common-button clean-all-submit" id="cleanAllButton" type="button">清空全部</button>
+      <button class="common-button refresh-submit" id="refreshButton" type="button">刷新</button>
+    </div>
+
+    <section class="remote-section" aria-label="已上传文件">
+      <h2 class="section-title">已上传文件</h2>
+      <div class="remote-preview-list" id="remotePreviewList"></div>
+    </section>
+  </main>
+
+  <script src="./assets/cookie.js"></script>
+  <script src="./assets/windows.js"></script>
+  <script>
+    const MAX_CONCURRENT_UPLOADS = 3;
+    const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+    const fileInput = document.getElementById("fileInput");
+    const previewList = document.getElementById("previewList");
+    const remotePreviewList = document.getElementById("remotePreviewList");
+    const uploadButton = document.getElementById("uploadButton");
+    const clearButton = document.getElementById("clearButton");
+    const cleanAllButton = document.getElementById("cleanAllButton");
+    const refreshButton = document.getElementById("refreshButton");
+    let selectedItems = [];
+    let previewItems = [];
+    let isUploading = false;
+
+    function setStatus(item, text, className) {
+      item.status.textContent = text;
+      item.status.className = "file-status" + (className ? " " + className : "");
+    }
+
+    function setProgress(item, percent) {
+      item.progress.style.width = Math.max(0, Math.min(100, percent)) + "%";
+    }
+
+    function createPreviewItem(file) {
+      const wrapper = document.createElement("article");
+      wrapper.className = "preview-item";
+
+      const image = document.createElement("img");
+      image.className = "thumb";
+      image.alt = file.name;
+      image.src = URL.createObjectURL(file);
+
+      const status = document.createElement("p");
+      status.className = "file-status";
+      status.textContent = "待上传";
+
+      const removeButton = document.createElement("button");
+      removeButton.className = "preview-remove";
+      removeButton.type = "button";
+      removeButton.textContent = "移除";
+      removeButton.setAttribute("aria-label", "移除图片");
+
+      const progress = document.createElement("div");
+      progress.className = "progress";
+
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar";
+
+      progress.append(progressBar);
+      wrapper.append(image, removeButton, status, progress);
+      previewList.append(wrapper);
+
+      const item = {
+        file,
+        wrapper,
+        image,
+        removeButton,
+        status,
+        progress: progressBar,
+        uploaded: false
+      };
+
+      removeButton.addEventListener("click", function () {
+        removePreviewItem(item);
+      });
+
+      return item;
+    }
+
+    function removePreviewItem(item) {
+      if (isUploading) {
+        return;
+      }
+
+      selectedItems = selectedItems.filter(function (selectedItem) {
+        return selectedItem !== item;
+      });
+      previewItems = previewItems.filter(function (previewItem) {
+        return previewItem !== item;
+      });
+      URL.revokeObjectURL(item.image.src);
+      item.wrapper.remove();
+    }
+
+    function clearPreviewItems() {
+      if (isUploading) {
+        return;
+      }
+
+      previewItems.forEach(function (item) {
+        URL.revokeObjectURL(item.image.src);
+        item.wrapper.remove();
+      });
+      selectedItems = [];
+      previewItems = [];
+      fileInput.value = "";
+    }
+
+    function renderFiles(files) {
+      let addedCount = 0;
+
+      Array.from(files).forEach(function (file) {
+        if (IMAGE_TYPES.indexOf(file.type) === -1) {
+          return;
+        }
+        const item = createPreviewItem(file);
+        selectedItems.push(item);
+        previewItems.push(item);
+        addedCount += 1;
+      });
+
+      fileInput.value = "";
+
+      if (files.length && !addedCount) {
+        Showbubble("请选择jpg、png、jpeg、webp图片", "#d90000", "#ffffff");
+      }
+    }
+
+    function normalizePhotoUrl(photoUrl) {
+      if (!photoUrl) {
+        return "";
+      }
+
+      const text = String(photoUrl);
+      if (/^https?:\/\//i.test(text)) {
+        return text;
+      }
+      return window.location.origin + (text.charAt(0) === "/" ? text : "/" + text);
+    }
+
+    async function loadUploadedPhotos() {
+      refreshButton.disabled = true;
+      remotePreviewList.innerHTML = '<p class="remote-empty">加载中</p>';
+
+      try {
+        const response = await fetch(window.location.origin + "/api/attachment/get_photos", {
+          method: "GET",
+          credentials: "same-origin"
+        });
+        const result = response.ok ? await response.json() : { result: false, msg: "已上传文件加载失败" };
+
+        if (!result || result.result !== true || !Array.isArray(result.data)) {
+          remotePreviewList.innerHTML = '<p class="remote-empty">暂无已上传文件</p>';
+          Showbubble(result && result.msg ? result.msg : "已上传文件加载失败", "#d90000", "#ffffff");
+          return [];
+        }
+
+        remotePreviewList.innerHTML = "";
+        if (!result.data.length) {
+          remotePreviewList.innerHTML = '<p class="remote-empty">暂无已上传文件</p>';
+          return [];
+        }
+
+        result.data.forEach(function (photoUrl, index) {
+          const image = document.createElement("img");
+          image.className = "remote-thumb";
+          image.src = normalizePhotoUrl(photoUrl);
+          image.alt = "已上传图片" + String(index + 1);
+          remotePreviewList.append(image);
+        });
+
+        return result.data;
+      } catch (error) {
+        remotePreviewList.innerHTML = '<p class="remote-empty">暂无已上传文件</p>';
+        Showbubble("已上传文件加载失败", "#d90000", "#ffffff");
+        return [];
+      } finally {
+        refreshButton.disabled = false;
+      }
+    }
+
+    async function cleanUploadedPhotos() {
+      if (isUploading) {
+        return;
+      }
+
+      const token = await WarehouseCookie.requireToken();
+      if (!token) {
+        return;
+      }
+
+      cleanAllButton.disabled = true;
+      refreshButton.disabled = true;
+
+      try {
+        const response = await fetch(window.location.origin + "/api/attachment/clean", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "same-origin",
+          body: JSON.stringify({ token: token })
+        });
+        const result = response.ok ? await response.json() : { result: false, msg: "清空失败" };
+
+        if (!result || result.result !== true) {
+          Showbubble(result && result.msg ? result.msg : "清空失败", "#d90000", "#ffffff");
+          return;
+        }
+
+        Showbubble(result.msg || "清空成功", "#000000", "#ffffff");
+      } catch (error) {
+        Showbubble("清空失败", "#d90000", "#ffffff");
+      } finally {
+        cleanAllButton.disabled = false;
+        refreshButton.disabled = false;
+        await loadUploadedPhotos();
+      }
+    }
+
+    function uploadSingle(item, token) {
+      return new Promise(function (resolve) {
+        const formData = new FormData();
+        formData.append("file", item.file);
+        formData.append("token", token);
+
+        const request = new XMLHttpRequest();
+        request.open("POST", window.location.origin + "/api/attachment/upload", true);
+
+        setStatus(item, "上传中", "");
+        setProgress(item, 0);
+
+        request.upload.addEventListener("progress", function (event) {
+          if (event.lengthComputable) {
+            setProgress(item, Math.round((event.loaded / event.total) * 90));
+          }
+        });
+
+        request.addEventListener("load", function () {
+          let data = null;
+          try {
+            data = JSON.parse(request.responseText || "{}");
+          } catch (error) {
+            data = null;
+          }
+
+          if (request.status >= 200 && request.status < 300 && data && data.result === true) {
+            setProgress(item, 100);
+            setStatus(item, "上传成功", "is-success");
+            item.uploaded = true;
+            selectedItems = selectedItems.filter(function (selectedItem) {
+              return selectedItem !== item;
+            });
+            resolve(true);
+            return;
+          }
+
+          setStatus(item, "上传失败", "is-failed");
+          resolve(false);
+        });
+
+        request.addEventListener("error", function () {
+          setStatus(item, "上传失败", "is-failed");
+          resolve(false);
+        });
+
+        request.send(formData);
+      });
+    }
+
+    async function runUploadQueue(items, token) {
+      let cursor = 0;
+      let success = 0;
+      let failed = 0;
+
+      async function worker() {
+        while (cursor < items.length) {
+          const item = items[cursor];
+          cursor += 1;
+          const ok = await uploadSingle(item, token);
+          if (ok) {
+            success += 1;
+          } else {
+            failed += 1;
+          }
+        }
+      }
+
+      const workers = [];
+      const totalWorkers = Math.min(MAX_CONCURRENT_UPLOADS, items.length);
+      for (let i = 0; i < totalWorkers; i += 1) {
+        workers.push(worker());
+      }
+      await Promise.all(workers);
+
+      return { success, failed };
+    }
+
+    async function uploadFiles() {
+      if (isUploading) {
+        return;
+      }
+
+      if (!selectedItems.length) {
+            Showbubble("请选择需要上传的图片", "#d90000", "#ffffff");
+            return "";
+      }
+
+      const token = await WarehouseCookie.requireToken();
+      if (!token) {
+        return;
+      }
+
+      isUploading = true;
+      uploadButton.disabled = true;
+      clearButton.disabled = true;
+      cleanAllButton.disabled = true;
+      refreshButton.disabled = true;
+      uploadButton.textContent = "上传中";
+      previewItems.forEach(function (item) {
+        item.removeButton.disabled = true;
+      });
+
+      const uploadItems = selectedItems.slice();
+      uploadItems.forEach(function (item) {
+        setStatus(item, "待上传", "");
+        setProgress(item, 0);
+      });
+
+      const result = await runUploadQueue(uploadItems, token);
+      Showbubble("上传完成：成功" + result.success + "个，失败" + result.failed + "个", result.failed ? "#d90000" : "#000000", "#ffffff");
+      await loadUploadedPhotos();
+
+      isUploading = false;
+      uploadButton.disabled = false;
+      clearButton.disabled = false;
+      cleanAllButton.disabled = false;
+      refreshButton.disabled = false;
+      uploadButton.textContent = "上传";
+      previewItems.forEach(function (item) {
+        item.removeButton.disabled = false;
+      });
+    }
+
+    fileInput.addEventListener("change", function () {
+      renderFiles(fileInput.files);
+    });
+
+    uploadButton.addEventListener("click", uploadFiles);
+    clearButton.addEventListener("click", clearPreviewItems);
+    cleanAllButton.addEventListener("click", cleanUploadedPhotos);
+    refreshButton.addEventListener("click", loadUploadedPhotos);
+    loadUploadedPhotos();
+  </script>
+</body>
+</html>

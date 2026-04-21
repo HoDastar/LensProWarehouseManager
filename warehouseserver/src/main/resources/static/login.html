@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - LensPro器材管理</title>
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="./assets/root.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--color-page);
+      overflow: hidden;
+    }
+
+    .login-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .login-title {
+      margin: 0 0 28px;
+      color: var(--color-black);
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .login-field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .login-label {
+      color: var(--color-gray-700);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .text-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      color: var(--color-black);
+      background: var(--color-white);
+      font: inherit;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .text-input:focus {
+      border-color: var(--color-gray-700);
+      box-shadow: var(--shadow-focus);
+    }
+
+    .login-error {
+      min-height: 20px;
+      margin: 8px 0 14px;
+      color: var(--color-danger);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .login-submit {
+      width: 100%;
+    }
+
+    @media (max-width: 520px) {
+      .login-panel {
+        align-items: flex-start;
+        padding: 88px 20px 28px;
+      }
+
+      .login-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-panel">
+    <section class="login-box" aria-label="登录">
+      <h1 class="login-title">LensPro器材管理</h1>
+      <div class="login-field">
+        <label class="login-label" for="loginPasswordInput">访问密码</label>
+        <input class="text-input" id="loginPasswordInput" type="password" autocomplete="current-password" placeholder="请输入访问密码">
+      </div>
+      <p class="login-error" id="loginErrorText"></p>
+      <button class="common-button login-submit" id="loginSubmitButton" type="button">登录</button>
+    </section>
+  </main>
+
+  <script src="./assets/cookie.js" data-auto-check="false"></script>
+  <script>
+    const loginPasswordInput = document.getElementById("loginPasswordInput");
+    const loginErrorText = document.getElementById("loginErrorText");
+    const loginSubmitButton = document.getElementById("loginSubmitButton");
+
+    WarehouseCookie.redirectIfAuthenticated("/upload.html");
+
+    async function submitLogin() {
+      const password = loginPasswordInput.value.trim();
+      loginErrorText.textContent = "";
+
+      if (!password) {
+        loginErrorText.textContent = "请输入访问密码";
+        loginPasswordInput.focus();
+        return;
+      }
+
+      loginSubmitButton.disabled = true;
+      loginSubmitButton.textContent = "登录中";
+
+      try {
+        const response = await fetch(window.location.origin + "/api/config/check_password_web?password=" + encodeURIComponent(password), {
+          method: "GET",
+          credentials: "same-origin"
+        });
+        const result = response.ok ? await response.json() : { result: false, msg: "登录失败" };
+
+        if (!result || result.result !== true || !result.data) {
+          loginErrorText.textContent = result && result.msg ? result.msg : "登录失败";
+          loginPasswordInput.focus();
+          return;
+        }
+
+        WarehouseCookie.setToken(result.data, 30);
+
+        const params = new URLSearchParams(window.location.search);
+        window.location.replace(WarehouseCookie.safeRedirectPath(params.get("redirect"), "/upload.html"));
+      } catch (error) {
+        loginErrorText.textContent = "登录失败";
+        loginPasswordInput.focus();
+      } finally {
+        loginSubmitButton.disabled = false;
+        loginSubmitButton.textContent = "登录";
+      }
+    }
+
+    loginSubmitButton.addEventListener("click", submitLogin);
+    loginPasswordInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        submitLogin();
+      }
+    });
+    loginPasswordInput.focus();
+  </script>
+</body>
+</html>

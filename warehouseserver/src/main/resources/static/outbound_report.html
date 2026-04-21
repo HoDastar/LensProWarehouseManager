@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出库报告单</title>
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="./assets/root.css">
+  <script src="./assets/url.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: SimSun, "宋体", serif !important;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      color: #000000;
+      font-family: SimSun, "宋体", serif;
+      font-size: 16px;
+    }
+
+    body {
+      padding: 28px 18px;
+    }
+
+    .report-page {
+      width: 900px;
+      min-height: 1123px;
+      margin: 0 auto;
+      background: #ffffff;
+      font-family: SimSun, "宋体", serif;
+    }
+
+    .loading,
+    .error {
+      padding: 80px 0;
+      text-align: center;
+      font-size: 22px;
+      font-family: SimSun, "宋体", serif;
+    }
+
+    .error {
+      color: #a80000;
+    }
+
+    .report {
+      display: none;
+      position: relative;
+      margin: 30px 28px;
+    }
+
+    .report.is-ready {
+      display: block;
+    }
+
+    .qr-code {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+    }
+
+    .title {
+      margin: 20px 120px 8px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0;
+      font-family: SimSun, "宋体", serif;
+    }
+
+    .report-id {
+      margin: 0 120px 50px;
+      text-align: center;
+      font-size: 22px;
+      line-height: 1.4;
+      font-family: SimSun, "宋体", serif;
+      word-break: break-all;
+    }
+
+    .info-table,
+    .goods-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-family: SimSun, "宋体", serif;
+    }
+
+    .info-table {
+      margin-bottom: 24px;
+      font-size: 20px;
+    }
+
+    .info-table td,
+    .goods-table th,
+    .goods-table td {
+      border: 2px solid #000000;
+      padding: 10px 12px;
+      vertical-align: middle;
+      font-family: SimSun, "宋体", serif;
+    }
+
+    .info-table td {
+      height: 56px;
+    }
+
+    .info-label {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .goods-table {
+      font-size: 20px;
+    }
+
+    .goods-table th {
+      height: 48px;
+      background: #d9d9d9;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .goods-table td {
+      height: 48px;
+      word-break: break-all;
+    }
+
+    .goods-table .total-row td {
+      background: #d9d9d9;
+      font-weight: 700;
+    }
+
+    .goods-table .empty-cell {
+      text-align: center;
+      color: #444444;
+      font-weight: 400;
+    }
+
+    .note-block {
+      margin-top: 30px;
+      font-size: 22px;
+      line-height: 1.7;
+      font-family: SimSun, "宋体", serif;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .note-title {
+      font-weight: 700;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+      }
+
+      .report-page {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 18mm;
+      }
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 12px;
+      }
+
+      .report-page {
+        width: 100%;
+        min-height: 0;
+        padding: 16px 10px;
+      }
+
+      .title {
+        margin-right: 104px;
+        margin-left: 0;
+        font-size: 28px;
+      }
+
+      .report-id {
+        margin-right: 104px;
+        margin-left: 0;
+        font-size: 18px;
+      }
+
+      .qr-code {
+        width: 82px;
+        height: 82px;
+      }
+
+      .info-table,
+      .goods-table {
+        font-size: 17px;
+      }
+
+      .info-table td,
+      .goods-table th,
+      .goods-table td {
+        padding: 8px;
+      }
+
+      .note-block {
+        margin-top: 48px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="report-page">
+    <div id="loading" class="loading">加载中</div>
+    <div id="error" class="error" hidden></div>
+
+    <section id="report" class="report" aria-label="出库报告单">
+      <img id="qrCode" class="qr-code" alt="出库报告二维码">
+
+      <h1 class="title">出库报告单</h1>
+      <div id="reportId" class="report-id"></div>
+
+      <table class="info-table" aria-label="出库报告基础信息">
+        <colgroup>
+          <col style="width: 50%;">
+          <col style="width: 50%;">
+        </colgroup>
+        <tbody>
+          <tr>
+            <td><span class="info-label">用户：</span><span id="username"></span></td>
+            <td><span class="info-label">tel：</span><span id="tel"></span></td>
+          </tr>
+          <tr>
+            <td><span class="info-label">开始日期：</span><span id="startTime"></span></td>
+            <td><span class="info-label">结束日期：</span><span id="endTime"></span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="goods-table" aria-label="出库货物列表">
+        <colgroup>
+          <col style="width: 20%;">
+          <col style="width: 25%;">
+          <col style="width: 25%;">
+          <col style="width: 30%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>项目编号</th>
+            <th>项目</th>
+            <th>标配清单</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody id="goodsBody"></tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td>总计</td>
+            <td id="totalCount"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="note-block">
+        <span class="note-title">备注：</span><span id="note"></span>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image"></script>
+  <script>
+    const url = "http://192.168.0.3:8081";
+
+    function getQueryParam(name) {
+      return new URLSearchParams(window.location.search).get(name) || "";
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value == null || value === "" ? "" : String(value);
+    }
+
+    function showError(message) {
+      document.getElementById("loading").hidden = true;
+      const error = document.getElementById("error");
+      error.textContent = message;
+      error.hidden = false;
+    }
+
+    async function loadGoodsDetails(goods) {
+      if (!Array.isArray(goods) || goods.length === 0) {
+        return [];
+      }
+
+      return await Promise.all(goods.map(async (goodsId) => {
+        const id = goodsId == null ? "" : String(goodsId);
+        const response = await getApi(`${url}/api/warehouse/get_item?id=${encodeURIComponent(id)}`);
+
+        if (!response || response.result !== true || !response.data) {
+          return {
+            id,
+            name: "",
+            list: [],
+            note: response && response.msg ? response.msg : "查询失败"
+          };
+        }
+
+        return {
+          id,
+          name: response.data.name || "",
+          list: Array.isArray(response.data.list) ? response.data.list : [],
+          note: response.data.note || ""
+        };
+      }));
+    }
+
+    function renderGoods(goods) {
+      const goodsBody = document.getElementById("goodsBody");
+      goodsBody.innerHTML = "";
+
+      if (!Array.isArray(goods) || goods.length === 0) {
+        const row = document.createElement("tr");
+        row.innerHTML = '<td colspan="4" class="empty-cell">暂无出库项目</td>';
+        goodsBody.appendChild(row);
+        setText("totalCount", "0");
+        return;
+      }
+
+      goods.forEach((item) => {
+        const row = document.createElement("tr");
+        const codeCell = document.createElement("td");
+        const itemCell = document.createElement("td");
+        const listCell = document.createElement("td");
+        const noteCell = document.createElement("td");
+
+        codeCell.textContent = item.id || "";
+        itemCell.textContent = item.name || "";
+        listCell.textContent = item.list.length > 0 ? item.list.join("、") : "";
+        noteCell.textContent = item.note || "";
+
+        row.append(codeCell, itemCell, listCell, noteCell);
+        goodsBody.appendChild(row);
+      });
+
+      setText("totalCount", String(goods.length));
+    }
+
+    function renderReport(data, goodsDetails) {
+      const id = data && data.id ? String(data.id) : getQueryParam("id");
+
+      setText("reportId", id);
+      setText("username", data.username);
+      setText("tel", data.tel);
+      setText("startTime", data.start_time);
+      setText("endTime", data.end_time);
+      setText("note", data.note || "");
+      renderGoods(goodsDetails);
+
+      const qrCode = document.getElementById("qrCode");
+      qrCode.src = `${url}/api/get_or_qr_code?text=${encodeURIComponent(id)}`;
+
+      document.getElementById("loading").hidden = true;
+      document.getElementById("report").classList.add("is-ready");
+    }
+
+    async function loadOutboundReport() {
+      const id = getQueryParam("id");
+      if (!id) {
+        showError("缺少出库报告编号");
+        return;
+      }
+
+      const response = await getApi(`${url}/api/outbound_report/get_report?id=${encodeURIComponent(id)}`);
+      if (!response || response.result !== true || !response.data) {
+        showError(response && response.msg ? response.msg : "获取出库报告失败");
+        return;
+      }
+
+      const goodsDetails = await loadGoodsDetails(response.data.goods);
+      renderReport(response.data, goodsDetails);
+    }
+
+    window.addEventListener("DOMContentLoaded", loadOutboundReport);
+
+    function exportImg() {
+        const target = document.getElementById("report");
+
+        html2canvas(target).then(canvas => {
+            // 转成图片
+            const link = document.createElement("a");
+            link.download = "screenshot.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    }
+    function exportImg2() {
+        domtoimage.toPng(document.getElementById('report'))
+            .then(function (dataUrl) {
+                const link = document.createElement('a');
+                link.download = 'image.png';
+                link.href = dataUrl;
+                link.click();
+            });}
+  </script>
+</body>
+</html>

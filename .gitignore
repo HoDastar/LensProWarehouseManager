@@ -1,0 +1,10 @@
+# Node 依赖
+app/node_modules/
+
+# 构建输出
+app/dist/
+app/out/
+app/build/
+
+# 日志
+app/*.log

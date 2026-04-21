@@ -1,0 +1,89 @@
+﻿:root {
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-page: #f4f4f4;
+  --color-panel: #ffffff;
+  --color-ink: #050505;
+  --color-ink-soft: #222222;
+  --color-gray-900: #121212;
+  --color-gray-800: #242424;
+  --color-gray-700: #3a3a3a;
+  --color-gray-600: #555555;
+  --color-gray-500: #777777;
+  --color-gray-400: #9a9a9a;
+  --color-gray-300: #c8c8c8;
+  --color-gray-200: #dddddd;
+  --color-gray-100: #eeeeee;
+  --color-off-white: #f8f8f8;
+  --color-near-white: #fafafa;
+  --color-danger: #d90000;
+  --color-danger-dark: #a80000;
+  --color-success: #32cd32;
+  --color-success-dark: #229922;
+  --shadow-common: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --shadow-strong: 0 18px 42px rgba(0, 0, 0, 0.26);
+  --shadow-focus: 0 0 0 3px rgba(85, 85, 85, 0.18), 0 0 15px rgba(0, 0, 0, 0.18);
+  --radius-small: 6px;
+  --radius-medium: 8px;
+  --font-main: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-ink);
+  background: var(--color-page);
+  font-family: var(--font-main);
+}
+
+.common-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 10px 20px;
+  margin: 0;
+  border: 1px solid var(--color-black);
+  border-radius: var(--radius-small);
+  color: var(--color-white);
+  background: var(--color-black);
+  box-shadow: var(--shadow-common);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.5s ease;
+}
+
+.common-button:hover {
+  border-color: var(--color-gray-700);
+  background: var(--color-gray-700);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+}
+
+.common-button:active {
+  border-color: var(--color-gray-600);
+  background: var(--color-gray-600);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(0.96);
+}
+
+.common-button:disabled {
+  border-color: var(--color-gray-400);
+  color: var(--color-gray-600);
+  background: var(--color-gray-200);
+  box-shadow: none;
+  cursor: not-allowed;
+}
