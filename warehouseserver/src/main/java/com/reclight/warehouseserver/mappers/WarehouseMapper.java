@@ -117,4 +117,20 @@ ORDER BY time DESC, id DESC
             @Param("type") int type,
             @Param("time") long time
     );
+
+    // 仅获取出库附件
+    @Select("""
+        SELECT attachment FROM warehouse_outbound_report WHERE id = #{id}
+    """)
+    String getOutboundAttachmentById(
+            @Param("id") String id
+    );
+
+    // 仅获取入库附件
+    @Select("""
+        SELECT attachment FROM warehouse_inbound_report WHERE id = #{id}
+    """)
+    String getInboundAttachmentById(
+            @Param("id") String id
+    );
 }

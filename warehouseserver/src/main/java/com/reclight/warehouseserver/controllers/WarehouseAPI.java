@@ -2,6 +2,8 @@ package com.reclight.warehouseserver.controllers;
 
 import com.reclight.warehouseserver.entities.EntityWarehouse;
 import com.reclight.warehouseserver.mappers.CheckToken;
+import com.reclight.warehouseserver.mappers.InboundReportMapper;
+import com.reclight.warehouseserver.mappers.OutBoundReportMapper;
 import com.reclight.warehouseserver.mappers.WarehouseMapper;
 import com.reclight.warehouseserver.util.FileUtil;
 import com.reclight.warehouseserver.util.Respond;
@@ -22,6 +24,11 @@ import java.util.*;
 public class WarehouseAPI {
     @Autowired
     public WarehouseMapper warehouseMapper;
+    @Autowired
+    public OutBoundReportMapper outBoundReportMapper;
+    @Autowired
+    public InboundReportMapper inboundReportMapper;
+
     long lastSubmitTime = 0;
 
     // 获取项目列表
@@ -372,6 +379,24 @@ public class WarehouseAPI {
             return new Respond<>(false, "添加记录失败，请联系管理员", null);
         }
         return new Respond<>(true, "删除成功", null);
+    }
+
+    // 获取订单所有附件
+    @GetMapping("/get_attachment")
+    public Respond<Map<String, Object>> getAttachment(
+            @RequestParam("id") String id
+    ) {
+        Map<String, Object> result = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        result.put("outbound", mapper.readValue(
+                warehouseMapper.getOutboundAttachmentById(id), List.class
+        ));
+        result.put("inbound", mapper.readValue(
+                warehouseMapper.getInboundAttachmentById(id), List.class
+        ));
+
+        return new Respond<>(true, "获取成功", result);
     }
 
 }

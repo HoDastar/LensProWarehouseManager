@@ -86,8 +86,8 @@ public class FileUtil {
     }
 
     // 删除文件；如果删除失败会抛出 IOException
-    public static void deleteFile(String dirStr, String fileName) throws IOException {
-        Path dir = Paths.get(dirStr + fileName);
+    public static void deleteFile(String dirStr) throws IOException {
+        Path dir = Paths.get(dirStr);
         Files.deleteIfExists(dir);
     }
 }
