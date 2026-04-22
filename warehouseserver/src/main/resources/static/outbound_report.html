@@ -362,7 +362,7 @@
       renderGoods(goodsDetails);
 
       const qrCode = document.getElementById("qrCode");
-      qrCode.src = `${url}/api/get_or_qr_code?text=${encodeURIComponent(id)}`;
+      qrCode.src = `${window.location.origin}/api/get_or_qr_code?text=${encodeURIComponent(id)}`;
 
       document.getElementById("loading").hidden = true;
       document.getElementById("report").classList.add("is-ready");
@@ -375,7 +375,7 @@
         return;
       }
 
-      const response = await getApi(`${url}/api/outbound_report/get_report?id=${encodeURIComponent(id)}`);
+      const response = await getApi(`${window.location.origin}/api/order/get_outbound_report?id=${encodeURIComponent(id)}`);
       if (!response || response.result !== true || !response.data) {
         showError(response && response.msg ? response.msg : "获取出库报告失败");
         return;

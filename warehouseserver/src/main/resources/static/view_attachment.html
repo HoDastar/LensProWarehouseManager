@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LensPro库管系统附件查看</title>
+  <link rel="icon" href="./assets/icon.png">
+  <link rel="stylesheet" href="./assets/root.css">
+  <link rel="stylesheet" href="./assets/windows.css">
+    <link rel="stylesheet" href="./assets/form.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--color-page);
+    }
+
+    .attachment-page {
+      width: min(920px, 100%);
+      min-height: 100vh;
+      padding: 34px 28px 46px;
+      text-align: left;
+    }
+
+    .page-title {
+      margin: 0 0 30px;
+      color: var(--color-black);
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .attachment-section {
+      width: min(860px, 100%);
+      margin: 0 0 34px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 16px;
+      color: var(--color-black);
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--color-black);
+      flex: 0 0 auto;
+    }
+
+    .attachment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .attachment-item {
+      min-width: 0;
+    }
+
+    .attachment-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .attachment-thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      background: var(--color-white);
+      object-fit: cover;
+    }
+
+    .attachment-file {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      padding: 14px;
+      border: 1px solid var(--color-gray-300);
+      border-radius: var(--radius-small);
+      background: var(--color-white);
+      color: var(--color-black);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+      text-align: center;
+      word-break: break-all;
+    }
+
+    .attachment-name {
+      margin: 8px 0 0;
+      color: var(--color-gray-600);
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+
+    .empty-text {
+      margin: 0;
+      color: var(--color-gray-600);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 560px) {
+      .attachment-page {
+        padding: 24px 16px 36px;
+      }
+
+      .page-title {
+        margin-bottom: 24px;
+        font-size: 22px;
+      }
+
+      .attachment-section {
+        margin-bottom: 30px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .attachment-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="attachment-page">
+    <h1 class="page-title">LensPro库管系统附件查看</h1>
+
+    <section class="attachment-section">
+        <div class="bordered-table-wrap">
+            <table class="bordered-table order-table">
+                <thead>
+                <tr>
+                    <th>订单ID</th>
+                    <th>用户</th>
+                    <th>电话号码</th>
+                    <th>备注</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody id="orderTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="attachment-section" aria-labelledby="outboundTitle">
+      <h2 class="section-title" id="outboundTitle">出库时记录</h2>
+      <div class="attachment-grid" id="outboundList">
+        <p class="empty-text">加载中</p>
+      </div>
+    </section>
+
+    <section class="attachment-section" aria-labelledby="inboundTitle">
+      <h2 class="section-title" id="inboundTitle">入库时记录</h2>
+      <div class="attachment-grid" id="inboundList">
+        <p class="empty-text">加载中</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const outboundList = document.getElementById("outboundList");
+    const inboundList = document.getElementById("inboundList");
+
+    function getOrderId() {
+      return new URLSearchParams(window.location.search).get("id") || "";
+    }
+
+    function normalizeAttachmentUrl(fileUrl) {
+      if (!fileUrl) {
+        return "";
+      }
+
+      const text = String(fileUrl);
+      if (/^https?:\/\//i.test(text)) {
+        return text;
+      }
+      return window.location.origin + (text.charAt(0) === "/" ? text : "/" + text);
+    }
+
+    function getFileName(fileUrl) {
+      const text = String(fileUrl || "");
+      const cleanText = text.split("?")[0].split("#")[0];
+      return decodeURIComponent(cleanText.substring(cleanText.lastIndexOf("/") + 1)) || "附件文件";
+    }
+
+    function isImageFile(fileUrl) {
+      return /\.(jpg|jpeg|png|webp|gif|bmp|svg)$/i.test(String(fileUrl).split("?")[0]);
+    }
+
+    function renderEmpty(root, text) {
+      root.innerHTML = "";
+      const empty = document.createElement("p");
+      empty.className = "empty-text";
+      empty.textContent = text;
+      root.append(empty);
+    }
+
+    function renderAttachmentList(root, files, emptyText) {
+      root.innerHTML = "";
+      if (!Array.isArray(files) || !files.length) {
+        renderEmpty(root, emptyText);
+        return;
+      }
+
+      files.forEach(function (fileUrl) {
+        const normalizedUrl = normalizeAttachmentUrl(fileUrl);
+        const fileName = getFileName(fileUrl);
+
+        const item = document.createElement("article");
+        item.className = "attachment-item";
+
+        const link = document.createElement("a");
+        link.className = "attachment-link";
+        link.href = normalizedUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        if (isImageFile(fileUrl)) {
+          const image = document.createElement("img");
+          image.className = "attachment-thumb";
+          image.src = normalizedUrl;
+          image.alt = fileName;
+          link.append(image);
+        } else {
+          const fileBox = document.createElement("div");
+          fileBox.className = "attachment-file";
+          fileBox.textContent = fileName;
+          link.append(fileBox);
+        }
+
+        const name = document.createElement("p");
+        name.className = "attachment-name";
+        name.textContent = fileName;
+
+        item.append(link, name);
+        root.append(item);
+      });
+    }
+
+    async function loadAttachments() {
+      const id = getOrderId();
+      if (!id) {
+        renderEmpty(outboundList, "缺少订单ID");
+        renderEmpty(inboundList, "缺少订单ID");
+        return;
+      }
+
+      try {
+          const response = await fetch(window.location.origin + "/api/order/get_outbound_report?id=" + encodeURIComponent(id), {
+            method: "GET",
+            credentials: "same-origin"
+          });
+          const result = response.ok ? await response.json() : { result: false, msg: "订单信息加载失败" };
+
+          if (!result || result.result !== true || !result.data) {
+                renderEmpty(outboundList, result && result.msg ? result.msg : "订单信息加载失败");
+                renderEmpty(inboundList, result && result.msg ? result.msg : "订单信息加载失败");
+                return;
+          }
+
+            const order = result.data;
+            const orderTableBody = document.getElementById("orderTableBody");
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${order.id || ""}</td>
+                <td>${order.username || ""}</td>
+                <td>${order.tel || ""}</td>
+                <td>${order.note || ""}</td>
+                <td>${order.status === 1 ? "已完结" : "进行中"}</td>
+            `;
+            orderTableBody.appendChild(row);
+      } catch (error) {
+          renderEmpty(outboundList, "订单信息加载失败");
+          renderEmpty(inboundList, "订单信息加载失败");
+          return;
+      }
+
+      try {
+        const response = await fetch(window.location.origin + "/api/order/get_attachment?id=" + encodeURIComponent(id), {
+          method: "GET",
+          credentials: "same-origin"
+        });
+        const result = response.ok ? await response.json() : { result: false, msg: "附件加载失败" };
+
+        if (!result || result.result !== true || !result.data) {
+          renderEmpty(outboundList, result && result.msg ? result.msg : "附件加载失败");
+          renderEmpty(inboundList, result && result.msg ? result.msg : "附件加载失败");
+          return;
+        }
+
+        renderAttachmentList(outboundList, result.data.outbound, "暂无出库附件");
+        renderAttachmentList(inboundList, result.data.inbound, "暂无入库附件");
+      } catch (error) {
+        renderEmpty(outboundList, "附件加载失败");
+        renderEmpty(inboundList, "附件加载失败");
+      }
+    }
+
+    loadAttachments();
+  </script>
+</body>
+</html>

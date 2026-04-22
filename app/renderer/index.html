@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LensPro库管系统</title>
+    <link rel="stylesheet" href="./assets/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="./assets/root.css">
     <link rel="stylesheet" href="./assets/window.css">
     <link rel="stylesheet" href="./assets/form.css">
-    <link rel="stylesheet" href="./assets/index.css">
 </head>
 
 <body>
@@ -29,27 +29,27 @@
         <aside class="app-sidebar">
             <nav class="toolbar-nav" aria-label="主导航">
                 <div class="toolbar-main">
-                <button class="toolbar-button is-active" type="button" data-page="overviewPage"><i
-                        class="fa-solid fa-chart-simple"></i><span>概览</span></button>
-                        <div class="hr" style="margin: 0;"></div>
-                <button class="toolbar-button" type="button" data-page="inventoryPage"><i
-                        class="fa-solid fa-boxes-stacked"></i><span>库存浏览</span></button>
-                <button class="toolbar-button" type="button" data-page="addPage"><i
-                        class="fa-solid fa-plus"></i><span>新增项目</span></button>
-                <button class="toolbar-button" type="button" data-page="modifyPage"><i
-                        class="fa-solid fa-pen-to-square"></i><span>修改项目</span></button>
-                        <div class="hr" style="margin: 0;"></div>
-                <button class="toolbar-button" type="button" data-page="outboundListPage"><i
-                        class="fa-solid fa-clipboard-list"></i><span>出库列表</span></button>
-                <button class="toolbar-button" type="button" data-page="outboundPage"><i
-                        class="fa-solid fa-arrow-up-from-bracket"></i><span>出库</span></button>
-                <button class="toolbar-button" type="button" data-page="inboundPage"><i
-                        class="fa-solid fa-arrow-right-to-bracket"></i><span>入库</span></button>
+                    <button class="toolbar-button is-active" type="button" data-page="overviewPage"><i
+                            class="fa-solid fa-chart-simple"></i><span>概览</span></button>
+                    <div class="hr" style="margin: 0;"></div>
+                    <button class="toolbar-button" type="button" data-page="inventoryPage"><i
+                            class="fa-solid fa-boxes-stacked"></i><span>库存浏览</span></button>
+                    <button class="toolbar-button" type="button" data-page="addPage"><i
+                            class="fa-solid fa-plus"></i><span>新增项目</span></button>
+                    <button class="toolbar-button" type="button" data-page="modifyPage"><i
+                            class="fa-solid fa-pen-to-square"></i><span>修改项目</span></button>
+                    <div class="hr" style="margin: 0;"></div>
+                    <button class="toolbar-button" type="button" data-page="outboundListPage"><i
+                            class="fa-solid fa-clipboard-list"></i><span>订单列表</span></button>
+                    <button class="toolbar-button" type="button" data-page="outboundPage"><i
+                            class="fa-solid fa-arrow-up-from-bracket"></i><span>出库</span></button>
+                    <button class="toolbar-button" type="button" data-page="inboundPage"><i
+                            class="fa-solid fa-arrow-right-to-bracket"></i><span>入库</span></button>
                 </div>
-                        <div class="hr" style="margin: 0;"></div>
+                <div class="hr" style="margin: 0;"></div>
                 <button class="toolbar-button" type="button" data-page="passwordPage"><i
                         class="fa-solid fa-key"></i><span>修改密码</span></button>
-                        
+
                 <button class="toolbar-button toolbar-about-button" type="button" data-page="aboutPage"><i
                         class="fa-solid fa-circle-info"></i><span>关于</span></button>
             </nav>
@@ -130,7 +130,7 @@
                 </div>
             </section>
             <section class="page-view" id="outboundListPage">
-                <h1 class="page-title"><i class="fa-solid fa-clipboard-list"></i> 出库列表</h1>
+                <h1 class="page-title"><i class="fa-solid fa-clipboard-list"></i> 订单列表</h1>
                 <div class="inventory-panel">
                     <div class="bordered-table-wrap">
                         <table class="bordered-table outbound-report-table">
@@ -165,7 +165,8 @@
                                 <p class="form-label-title">项目ID</p>
                                 <p class="form-label-desc">输入库存项目 ID 后添加到出库队列。</p>
                             </div>
-                            <input class="text-input" id="outboundQueryIdInput" type="text" placeholder="例如：NO839514874219296563">
+                            <input class="text-input" id="outboundQueryIdInput" type="text"
+                                placeholder="例如：NO839514874219296563">
                         </div>
                         <div class="form-submit">
                             <button class="common-button" id="outboundQuerySubmitButton" type="button">添加</button>
@@ -196,7 +197,8 @@
                             <div class="compact-form-row">
                                 <label class="compact-field">
                                     <span class="compact-label">姓名</span>
-                                    <input class="text-input" id="outboundUsernameInput" type="text" placeholder="请输入姓名">
+                                    <input class="text-input" id="outboundUsernameInput" type="text"
+                                        placeholder="请输入姓名">
                                 </label>
                                 <label class="compact-field">
                                     <span class="compact-label">电话号码</span>
@@ -214,7 +216,8 @@
                                 </label>
                             </div>
                             <div class="compact-form-actions">
-                                <button class="common-button" id="outboundSubmitButton" type="button"><span>提交出库</span></button>
+                                <button class="common-button" id="outboundSubmitButton"
+                                    type="button"><span>提交出库</span></button>
                                 <button class="common-button" id="outboundClearButton" type="button">清空队列</button>
                             </div>
                         </div>
@@ -238,7 +241,8 @@
                                 <p class="form-label-title">订单ID</p>
                                 <p class="form-label-desc">输入出库订单 ID 后加载订单信息。</p>
                             </div>
-                            <input class="text-input" id="inboundQueryOrderIdInput" type="text" placeholder="例如：OR839514874219296563">
+                            <input class="text-input" id="inboundQueryOrderIdInput" type="text"
+                                placeholder="例如：OR839514874219296563">
                         </div>
                         <div class="form-submit">
                             <button class="common-button" id="inboundQuerySubmitButton" type="button">查询</button>
@@ -301,7 +305,8 @@
                                 </label>
                             </div>
                             <div class="compact-form-actions">
-                                <button class="common-button" id="inboundFinishButton" type="button"><span>完结订单</span></button>
+                                <button class="common-button" id="inboundFinishButton"
+                                    type="button"><span>完结订单</span></button>
                             </div>
                         </div>
                     </div>
@@ -365,7 +370,8 @@
                     </div>
 
                     <div class="form-submit">
-                        <button class="common-button" id="addInventorySubmitButton" type="button"><span>提交</span></button>
+                        <button class="common-button" id="addInventorySubmitButton"
+                            type="button"><span>提交</span></button>
                         <button class="common-button" id="cleanInventorySubmitButton" type="button">清除</button>
                     </div>
                 </div>
@@ -387,21 +393,24 @@
                             <p class="form-label-title">当前密码</p>
                             <p class="form-label-desc">请输入当前访问密码。</p>
                         </div>
-                        <input class="text-input" id="oldPasswordInput" type="password" autocomplete="current-password" placeholder="请输入当前密码">
+                        <input class="text-input" id="oldPasswordInput" type="password" autocomplete="current-password"
+                            placeholder="请输入当前密码">
                     </div>
                     <div class="form-row">
                         <div>
                             <p class="form-label-title">新密码</p>
                             <p class="form-label-desc">请输入新的访问密码。</p>
                         </div>
-                        <input class="text-input" id="newPasswordInput" type="password" autocomplete="new-password" placeholder="请输入新密码">
+                        <input class="text-input" id="newPasswordInput" type="password" autocomplete="new-password"
+                            placeholder="请输入新密码">
                     </div>
                     <div class="form-row">
                         <div>
                             <p class="form-label-title">确认新密码</p>
                             <p class="form-label-desc">请再次输入新的访问密码。</p>
                         </div>
-                        <input class="text-input" id="confirmPasswordInput" type="password" autocomplete="new-password" placeholder="请再次输入新密码">
+                        <input class="text-input" id="confirmPasswordInput" type="password" autocomplete="new-password"
+                            placeholder="请再次输入新密码">
                     </div>
                     <div class="form-submit">
                         <button class="common-button" id="passwordSubmitButton" type="button">提交修改</button>
@@ -418,7 +427,8 @@
                                 <p class="form-label-title">项目ID</p>
                                 <p class="form-label-desc">输入库存项目 ID 后加载当前信息。</p>
                             </div>
-                            <input class="text-input" id="modifyQueryIdInput" type="text" placeholder="例如：NO839514874219296563">
+                            <input class="text-input" id="modifyQueryIdInput" type="text"
+                                placeholder="例如：NO839514874219296563">
                         </div>
                         <div class="form-submit">
                             <button class="common-button" id="modifyQuerySubmitButton" type="button">查询</button>
@@ -459,7 +469,8 @@
                                 <p class="form-label-title">项目</p>
                                 <p class="form-label-desc">必填，不超过 100 字。</p>
                             </div>
-                            <input class="text-input" id="modifyItemNameInput" type="text" maxlength="100" placeholder="请输入项目名称">
+                            <input class="text-input" id="modifyItemNameInput" type="text" maxlength="100"
+                                placeholder="请输入项目名称">
                         </div>
 
                         <div class="form-row">
@@ -479,7 +490,8 @@
                                 <p class="form-label-title">配件</p>
                                 <p class="form-label-desc">必填，使用 | 分割，每项不超过 50 字。</p>
                             </div>
-                            <textarea class="textarea-input" id="modifyItemListInput" placeholder="例如：电池 | 充电器 | 收纳包"></textarea>
+                            <textarea class="textarea-input" id="modifyItemListInput"
+                                placeholder="例如：电池 | 充电器 | 收纳包"></textarea>
                         </div>
 
                         <div class="form-row">
@@ -495,11 +507,13 @@
                                 <p class="form-label-title">备注</p>
                                 <p class="form-label-desc">可空，不超过 100 字。</p>
                             </div>
-                            <input class="text-input" id="modifyItemNoteInput" type="text" maxlength="100" placeholder="请输入备注信息">
+                            <input class="text-input" id="modifyItemNoteInput" type="text" maxlength="100"
+                                placeholder="请输入备注信息">
                         </div>
 
                         <div class="form-submit">
-                            <button class="common-button" id="modifyInfoSubmitButton" type="button"><span>提交修改</span></button>
+                            <button class="common-button" id="modifyInfoSubmitButton"
+                                type="button"><span>提交修改</span></button>
                         </div>
                     </div>
                 </div>
@@ -600,7 +614,7 @@
         };
 
         window.fetchOutboundReportData = async function fetchOutboundReportData() {
-            const result = await getApi(`${url}/api/outbound_report/get_report_list`);
+            const result = await getApi(`${url}/api/order/get_outbound_report_list`);
             if (result && result.result === false) {
                 Showbubble(result.msg || "出库列表加载失败", "#d90000", "#ffffff");
                 window.outboundReportAllData = [];
@@ -702,7 +716,7 @@
                     <td>${statusInfo.remainingDays}</td>
                     <td>${report.note || ""}</td>
                     <td><span class="outbound-report-status ${statusInfo.className}">${statusInfo.text}</span></td>
-                    <td><div class="inventory-action-group"><button class="inventory-text-button outbound-finish-button" type="button"${isFinished ? " disabled" : ""}>完结订单</button><button class="inventory-text-button outbound-report-button" type="button">出库报告</button></div></td>
+                    <td><div class="inventory-action-group"><button class="inventory-text-button outbound-finish-button" type="button"${isFinished ? " disabled" : ""}>完结</button><button class="inventory-text-button outbound-report-button" type="button">报告</button><button class="inventory-text-button outbound-attachment-button" type="button">附件</button></div></td>
                 `;
 
                 var finishButton = row.querySelector(".outbound-finish-button");
@@ -718,6 +732,17 @@
                     const result = await window.warehouseBrowser.openLink(`${url}/outbound_report.html?id=${encodeURIComponent(report.id)}`);
                     if (!result.ok) {
                         Showbubble(result.message || "打开出库报告失败", "#d90000", "#ffffff");
+                    }
+                });
+                row.querySelector(".outbound-attachment-button").addEventListener("click", async function () {
+                    if (!report.id) {
+                        Showbubble("订单ID不存在", "#d90000", "#ffffff");
+                        return;
+                    }
+
+                    const result = await window.warehouseBrowser.openLink(`${url}/view_attachment.html?id=${encodeURIComponent(report.id)}`);
+                    if (!result.ok) {
+                        Showbubble(result.message || "打开附件失败", "#d90000", "#ffffff");
                     }
                 });
                 body.append(row);
@@ -832,7 +857,7 @@
             }
 
             try {
-                const result = await postApi(`${url}/api/outbound_report/finish_order`, {
+                const result = await postApi(`${url}/api/order/finish_order`, {
                     token: token,
                     id: orderId
                 });
@@ -1578,7 +1603,7 @@
                 return null;
             }
 
-            const detailResult = await getApi(`${url}/api/outbound_report/get_report?id=${encodeURIComponent(orderId)}`);
+            const detailResult = await getApi(`${url}/api/order/get_outbound_report?id=${encodeURIComponent(orderId)}`);
             if (detailResult && detailResult.result !== false) {
                 var detailData = normalizeApiData(detailResult, null);
                 if (Array.isArray(detailData)) {
@@ -1762,7 +1787,7 @@
             finishButton.disabled = true;
             finishButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>完结中</span>';
             try {
-                const result = await postApi(`${url}/api/inbound_report/finish_order`, {
+                const result = await postApi(`${url}/api/order/finish_order`, {
                     id: report.id,
                     token: token,
                     note: note
@@ -1781,6 +1806,8 @@
                     fillInboundOrderView(refreshed);
                     await hydrateInboundQueueItems();
                 }
+                var queueRoot = document.getElementById("inboundQueueList");
+                queueRoot.innerHTML = "";
                 return result;
             } finally {
                 finishButton.disabled = false;
@@ -1923,7 +1950,7 @@
             if (!reg.test(tel)) {
                 Showbubble("电话号码格式不对", "#d90000", "#ffffff");
             }
-            
+
 
             if (note.length > 100 || username.length > 100) {
                 Showbubble("姓名和备注均不能超过 100 字", "#d90000", "#ffffff");
@@ -1939,7 +1966,7 @@
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>提交中</span>';
             try {
-                const result = await postApi(`${url}/api/outbound_report/addA`, {
+                const result = await postApi(`${url}/api/order/addA`, {
                     username: username,
                     tel: tel,
                     goods: window.outboundQueue.map(function (item) { return item.id; }),
@@ -2074,7 +2101,7 @@
             else {
                 setTimeout(() => {
                     checkToken();
-                },5 * 60 * 1000);
+                }, 5 * 60 * 1000);
             }
         }
 
@@ -2156,7 +2183,17 @@
             renderOutboundQueue();
             renderInboundQueue();
             window.loadOutboundUploadFileCount();
-            window.loadInboundUploadFileCount();
+            window.loadInboundUploadFileCount(); document.querySelectorAll(".bordered-table-wrap").forEach(function (wrap) {
+                wrap.addEventListener("wheel", function (event) {
+                    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    wrap.scrollLeft += event.deltaY;
+                }, { passive: false });
+            });
+
         });
     </script>
 </body>

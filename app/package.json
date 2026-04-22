@@ -1,13 +1,15 @@
 {
-  "name": "warehousemanager",
-  "version": "0.0",
+  "name": "WarehouseManager",
+  "version": "0.0.1",
   "description": "",
   "license": "ISC",
   "author": "Flare",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder",
+    "pack": "electron-builder --dir"
   },
   "dependencies": {
     "sqlite": "^5.1.1",
@@ -16,14 +18,17 @@
   "build": {
     "asar": true,
     "appId": "com.reclight.warehousemanagerapp",
-    "productName": "LensPro库管系统",
+    "productName": "LensProWarehouseManager",
     "directories": {
       "output": "dist"
     },
     "files": [
-      "main.js",
+      "index.js",
+      "config.js",
       "preload.js",
+      "icon.png",
       "renderer/**/*",
+      "main/**/*",
       "package.json"
     ],
     "win": {
@@ -41,7 +46,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "shortcutName": "LensPro"
     }
   },
   "devDependencies": {

@@ -1,30 +1,28 @@
 package com.reclight.warehouseserver.mappers;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface AttachmentMapper {
-    // 添加
+    // 出库时添加
     @Insert("""
         INSERT INTO warehouse_attachment
-        (id, name, `key`, time) VALUES 
-        (null, #{name}, #{key}, #{time})
+        (id, outbound, inbound) VALUES 
+        (#{id}, #{outbound}, '[]')
     """)
-    int add(
-            @Param("name") String name,
-            @Param("key") String key,
-            @Param("time") long time
+    int addOutbound(
+            @Param("id") String id,
+            @Param("outbound") String outbound
     );
 
-    // 查询口令
-    @Select("""
-        SELECT name FROM warehouse_attachment
-        WHERE `key` = #{key} ORDER BY id DESC
+    // 入库时添加
+    @Update("""
+        UPDATE warehouse_attachment SET inbound = #{inbound} WHERE id = #{id}
     """)
-    List<String> getAll(@Param("key") String key);
+    int addInbound(
+            @Param("inbound") String inbound,
+            @Param("id") String id
+    );
 }

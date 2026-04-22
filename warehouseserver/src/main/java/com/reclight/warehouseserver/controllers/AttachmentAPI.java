@@ -50,13 +50,13 @@ public class AttachmentAPI {
         return new Respond<>(true, "上传成功", null);
     }
 
-    // 查询图片
+    // 查询附件
     @GetMapping("/get_photos")
     public Respond<List<String>> getPhotos() {
         return new Respond<>(true, "获取成功", PhotoPool.getInstance().getData());
     }
 
-    // 清空图片
+    // 清空附件
     @PostMapping("/clean")
     public Respond<String> clean(
             @RequestBody HashMap<String, Object> body

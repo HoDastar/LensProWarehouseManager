@@ -2,7 +2,7 @@
 const windowManager = require("./main/windowManager");
 const trayManager = require("./main/trayManager");
 const { registerRendererEvents } = require("./main/ipcManager");
-const config = require('./main/config');
+const config = require('./config');
 
 app.isQuitting = false;
 app.disableHardwareAcceleration();
