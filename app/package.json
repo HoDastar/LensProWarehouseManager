@@ -1,5 +1,5 @@
 {
-  "name": "warehousemanager",
+  "name": "WarehouseManager",
   "version": "0.0.1",
   "description": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     },
     "files": [
       "index.js",
+      "config.js",
       "preload.js",
       "icon.png",
       "renderer/**/*",
