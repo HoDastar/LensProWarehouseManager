@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const VERSION = "0.0";
+const VERSION = "0.0.1";
 const BUILD = 0;
 const iniPath = path.join(__dirname, "..", "config.ini");
 
