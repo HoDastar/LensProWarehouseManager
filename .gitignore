@@ -6,5 +6,7 @@ app/dist/
 app/out/
 app/build/
 
+release/
+
 # 日志
 app/*.log
