@@ -1,6 +1,6 @@
 ﻿const { BrowserWindow, ipcMain, shell } = require("electron");
 const { app } = require("electron");
-const config = require("./../config");
+const config = require("./config");
 
 function getEventWindow(event, windowManager) {
   return BrowserWindow.fromWebContents(event.sender) || windowManager.getFocusedManagedWindow();

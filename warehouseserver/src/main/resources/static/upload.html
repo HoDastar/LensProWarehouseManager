@@ -620,7 +620,7 @@
       });
 
       const result = await runUploadQueue(uploadItems, token);
-      Showbubble("上传完成：成功" + result.success + "个，失败" + result.failed + "个", result.failed ? "#d90000" : "#000000", "#ffffff");
+      Showbubble("已上传" + result.success + "个", "#000000", "#ffffff");
       await loadUploadedPhotos();
 
       isUploading = false;

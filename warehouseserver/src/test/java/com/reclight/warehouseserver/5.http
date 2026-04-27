@@ -1,1 +1,1 @@
-GET http://localhost:8081/api/order/get_report_list
+GET http://localhost:8081/api/config/get_changelog

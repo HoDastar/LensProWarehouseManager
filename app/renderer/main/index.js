@@ -47,6 +47,45 @@ window.normalizeApiData = function normalizeApiData(result, fallback) {
     return fallback;
 };
 
+window.loadAboutChangelog = async function loadAboutChangelog() {
+    var listRoot = document.getElementById("aboutChangelogList");
+    if (!listRoot) {
+        return;
+    }
+
+    listRoot.innerHTML = "";
+    const result = await getApi(window.url + "/api/config/get_changelog");
+    if (result && result.result === false) {
+        Showbubble(result.msg || "版本日志加载失败", "#d90000", "#ffffff");
+        return;
+    }
+
+    var changelogList = window.normalizeApiData(result, []);
+    if (!Array.isArray(changelogList) || !changelogList.length) {
+        var emptyText = document.createElement("p");
+        emptyText.className = "about-changelog-content";
+        emptyText.textContent = "暂无版本日志";
+        listRoot.append(emptyText);
+        return;
+    }
+
+    changelogList.forEach(function (item) {
+        var changelogItem = document.createElement("div");
+        changelogItem.className = "about-changelog-item";
+
+        var versionTitle = document.createElement("h3");
+        versionTitle.className = "about-changelog-version";
+        versionTitle.textContent = item.version || "-";
+
+        var content = document.createElement("p");
+        content.className = "about-changelog-content";
+        content.textContent = String(item.content || "").replace(/\\n/g, "\n");
+
+        changelogItem.append(versionTitle, content);
+        listRoot.append(changelogItem);
+    });
+};
+
 window.showPage = function showPage(pageId) {
     var toolbarButtons = document.querySelectorAll(".toolbar-button");
     var pageViews = document.querySelectorAll(".page-view");
@@ -136,6 +175,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.checkToken();
     window.loadInventoryData();
     window.loadOutboundReportData();
+    window.loadAboutChangelog();
 
     document.getElementById("inventoryRefreshButton").addEventListener("click", function () {
         window.loadInventoryData();
@@ -144,13 +184,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.loadOutboundReportData();
     });
     document.getElementById("outboundUploadOpenButton").addEventListener("click", async function () {
-        await window.openOutboundUploadPage();
+        await window.openUploadPage();
     });
     document.getElementById("outboundUploadRefreshButton").addEventListener("click", async function () {
         await window.loadOutboundUploadFileCount();
     });
     document.getElementById("inboundUploadOpenButton").addEventListener("click", async function () {
-        await window.openOutboundUploadPage();
+        await window.openUploadPage();
     });
     document.getElementById("inboundUploadRefreshButton").addEventListener("click", async function () {
         await window.loadInboundUploadFileCount();
@@ -181,6 +221,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("cleanInventorySubmitButton").addEventListener("click", function () {
         window.handleCleanInventoryFormData();
     });
+    document.getElementById("cleanModifyInfo").addEventListener("click", function () {
+        window.handlecleanModifyInfo();
+    });
     document.getElementById("modifyPhotoInput").addEventListener("change", function () {
         window.fileInputChange("modifyPhotoInput");
     });
@@ -210,6 +253,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.loadOutboundUploadFileCount();
     window.loadInboundUploadFileCount();
 
+    /*
     document.querySelectorAll(".bordered-table-wrap").forEach(function (wrap) {
         wrap.addEventListener("wheel", function (event) {
             if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
@@ -219,4 +263,5 @@ document.addEventListener("DOMContentLoaded", async function () {
             wrap.scrollLeft += event.deltaY;
         }, { passive: false });
     });
+    */
 });

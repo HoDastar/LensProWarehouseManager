@@ -2,13 +2,10 @@ package com.reclight.warehouseserver.controllers;
 
 import com.reclight.warehouseserver.entities.EntityWarehouse;
 import com.reclight.warehouseserver.mappers.CheckToken;
-import com.reclight.warehouseserver.mappers.InboundReportMapper;
-import com.reclight.warehouseserver.mappers.OutBoundReportMapper;
 import com.reclight.warehouseserver.mappers.WarehouseMapper;
 import com.reclight.warehouseserver.util.FileUtil;
 import com.reclight.warehouseserver.util.Respond;
 import com.reclight.warehouseserver.util.Utilities;
-import org.apache.ibatis.annotations.Param;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +21,6 @@ import java.util.*;
 public class WarehouseAPI {
     @Autowired
     public WarehouseMapper warehouseMapper;
-    @Autowired
-    public OutBoundReportMapper outBoundReportMapper;
-    @Autowired
-    public InboundReportMapper inboundReportMapper;
 
     long lastSubmitTime = 0;
 
@@ -326,6 +319,33 @@ public class WarehouseAPI {
         }
         return new Respond<>(true, "修改成功", null);
 
+    }
+
+    // 修改项目标签
+    @PostMapping("/update_tags")
+    public Respond<String> updateTags(
+            @RequestBody HashMap<String, Object> body
+    ) throws Exception {
+        if (!body.containsKey("id") || !body.containsKey("tags") || !body.containsKey("token")) {
+            return new Respond<>(false, "参数错误", null);
+        }
+        if (!(body.get("id") instanceof String) || !(body.get("token") instanceof String) || !(body.get("tags") instanceof List)) {
+            return new Respond<>(false, "参数类型错误", null);
+        }
+        // 验证权限
+        if (!CheckToken.checkToken(body.get("token").toString())) {
+            return new Respond<>(false, "token无效", null);
+        }
+
+        String id = (String) body.get("id");
+        List<String> tags = (List<String>) body.get("tags");
+        String tagsJson = new ObjectMapper().writeValueAsString(tags);
+
+        int rowsAffected = warehouseMapper.updateWarehouseTags(id, tagsJson);
+        if (rowsAffected == 0) {
+            return new Respond<>(false, "修改失败，请联系管理员", null);
+        }
+        return new Respond<>(true, "修改成功", null);
     }
 
     // 删除项目

@@ -94,13 +94,6 @@ public class OrderAPI {
             nameMap.put(good, a.get().name);
         }
 
-        // 获取上传附件
-        List<String> photos = PhotoPool.getInstance().getData();
-        // 检查数量
-        if (photos.isEmpty()) {
-            return new Respond<>(false, "未上传附件", null);
-        }
-
         // 获取当前时间
         LocalDate nowDate = LocalDate.now();
         // 获取结束时间
@@ -112,9 +105,18 @@ public class OrderAPI {
         // 生成id
         String id = "OR" + Utilities.getNowYMDHMSNumber() + Utilities.generateNumber(6);
         // 转换goods为json字符串
-        ObjectMapper mapper = new ObjectMapper();
-        String goodsStr = mapper.writeValueAsString(goods);
-        String attachmentStr = mapper.writeValueAsString(photos);
+        ObjectMapper objMapper = new ObjectMapper();
+        String goodsStr = objMapper.writeValueAsString(goods);
+
+        // 获取上传附件
+        List<String> photos = PhotoPool.getInstance().getData();
+        String attachmentStr;
+        // 检查数量
+        if (photos.isEmpty()) {
+            attachmentStr = "[]";
+        } else {
+            attachmentStr = objMapper.writeValueAsString(photos);
+        }
         // 添加报告
         int result = orderMapper.addReport(
                 id, username, tel, goodsStr, nowDate, endDate, System.currentTimeMillis(), note
@@ -209,13 +211,6 @@ public class OrderAPI {
             return new Respond<>(false, "订单已完结", null);
         }
 
-        // 获取上传附件
-        List<String> photos = PhotoPool.getInstance().getData();
-        // 检查数量
-        if (photos.isEmpty()) {
-            return new Respond<>(false, "未上传附件", null);
-        }
-
         ObjectMapper objMapper = new ObjectMapper();
         // 获取物品id列表
         List<String> goods = objMapper.readValue(outboundReportOpt.get().goods, List.class);
@@ -242,13 +237,23 @@ public class OrderAPI {
             );
         }
 
+        // 获取上传附件
+        List<String> photos = PhotoPool.getInstance().getData();
+        String attachmentStr;
+        // 检查数量
+        if (photos.isEmpty()) {
+            attachmentStr = "[]";
+        } else {
+            attachmentStr = objMapper.writeValueAsString(photos);
+        }
+
         // 修改订单状态
         int rowsAffected = orderMapper.updateReportStatus(1, id);
         if (rowsAffected == 0) {
             return new Respond<>(false, "执行失败，请联系管理员", null);
         }
         // 入库报告
-        int rowsAffected2 = attachmentMapper.addInbound(objMapper.writeValueAsString(photos), id);
+        int rowsAffected2 = attachmentMapper.addInbound(attachmentStr, id);
         if (rowsAffected2 == 0) {
             return new Respond<>(false, "执行失败2，请联系管理员", null);
         }

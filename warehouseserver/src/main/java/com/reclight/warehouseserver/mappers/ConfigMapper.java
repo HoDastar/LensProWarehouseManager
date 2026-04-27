@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface ConfigMapper {
     @Select("""
@@ -20,4 +23,10 @@ public interface ConfigMapper {
             @Param("value") String value,
             @Param("id") int id
     );
+
+    // 更新日志
+    @Select("""
+    SELECT version, content FROM warehouse_version_log ORDER BY id DESC LIMIT 5
+    """)
+    List<Map<String, String>> getVersionLog();
 }

@@ -12,6 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -116,5 +117,12 @@ public class ConfigAPI {
         String value = configMapper.getConfigById(2);
         int build = Integer.parseInt(value);
         return new Respond<>(true, "true", build);
+    }
+
+    // 获取版本更新日志
+    @GetMapping("/get_changelog")
+    public Respond<List<Map<String, String>>> getChangelog() {
+        List<Map<String, String>> a = configMapper.getVersionLog();
+        return new Respond<>(true, "true", a);
     }
 }

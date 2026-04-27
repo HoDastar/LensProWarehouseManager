@@ -80,7 +80,15 @@ function loadModifyItemData(itemData) {
     document.getElementById("modifyItemListInput").value = Array.isArray(itemData.list) ? itemData.list.join(" | ") : "";
     document.getElementById("modifyItemTagsInput").value = Array.isArray(itemData.tags) ? itemData.tags.join(" | ") : "";
     document.getElementById("modifyItemNoteInput").value = itemData.note || "";
-    document.getElementById(itemData.status ? "modifyStatusOutRadio" : "modifyStatusInRadio").checked = true;
+    if (itemData.status === 1) {
+        document.getElementById("modifyStatusOutRadio").checked = true;
+    } else if (itemData.status === 0) {
+        document.getElementById("modifyStatusInRadio").checked = true;
+    } else {
+        document.getElementById("modifyStatusOutRadio").checked = false;
+        document.getElementById("modifyStatusInRadio").checked = false;
+    }
+
     var display = document.getElementById("modifyPhotoInputDisplay");
     display.innerHTML = itemData.thumbnail
         ? `<img class="input-file-img" src="${window.url}${itemData.thumbnail}" alt="${itemData.name || '项目缩略图'}">`
@@ -103,6 +111,11 @@ window.handleQueryModifyItem = async function handleQueryModifyItem() {
     loadModifyItemData(result.data);
     Showbubble(result.msg || "查询成功", "#32cd32", "#fff");
     return result.data;
+};
+
+window.handlecleanModifyInfo = function handlecleanModifyInfo() {
+    document.getElementById("modifyQueryIdInput").value = "";
+    loadModifyItemData({});
 };
 
 window.handleUpdateModifyStatus = async function handleUpdateModifyStatus() {
@@ -145,6 +158,53 @@ window.handleUpdateModifyInfo = async function handleUpdateModifyInfo() {
     return result;
 };
 
+function setInventoryBatchTagsLoading(isLoading) {
+    var submitButton = document.getElementById("inventoryBatchTagsButton");
+    if (!submitButton) {
+        return;
+    }
+    submitButton.disabled = isLoading;
+    submitButton.textContent = isLoading ? "修改中" : "修改标签";
+}
+
+window.handleBatchUpdateInventoryTags = async function handleBatchUpdateInventoryTags() {
+    var selectedIds = window.getSelectedInventoryIds();
+    var tagsInput = document.getElementById("inventoryBatchTagsInput");
+    var tags = tagsInput.value.trim().split(/\|/).map(function (item) { return item.trim(); }).filter(Boolean);
+
+    if (!selectedIds.length) {
+        Showbubble("请先选择项目", "#d90000", "#ffffff");
+        return null;
+    }
+    if (!tags.length) {
+        Showbubble("请填写标签", "#d90000", "#ffffff");
+        return null;
+    }
+
+    setInventoryBatchTagsLoading(true);
+    try {
+        var successCount = 0;
+        await Promise.all(selectedIds.map(async function (itemId) {
+            const result = await postApi(window.url + "/api/warehouse/update_tags", {
+                id: itemId,
+                tags: tags,
+                token: window.token
+            });
+            if (result && result.result) {
+                successCount += 1;
+            }
+        }));
+
+        Showbubble("已修改" + successCount + "个项目", "#32cd32", "#fff");
+        if (successCount > 0) {
+            await window.loadInventoryData();
+        }
+        return successCount;
+    } finally {
+        setInventoryBatchTagsLoading(false);
+    }
+};
+
 window.handleModifyInventoryItem = async function handleModifyInventoryItem(itemId) {
     if (!itemId) {
         Showbubble("项目ID不存在", "#d90000", "#ffffff");
@@ -156,34 +216,11 @@ window.handleModifyInventoryItem = async function handleModifyInventoryItem(item
     return await window.handleQueryModifyItem();
 };
 
-window.handleAlterPassword = async function handleAlterPassword() {
-    var submitButton = document.getElementById("passwordSubmitButton");
-    var password = document.getElementById("oldPasswordInput").value.trim();
-    var newPassword = document.getElementById("newPasswordInput").value.trim();
-    var confirmPassword = document.getElementById("confirmPasswordInput").value.trim();
-
-    if (!password || !newPassword || !confirmPassword) {
-        Showbubble("请完整填写密码", "#d90000", "#ffffff");
-        return null;
+document.addEventListener("DOMContentLoaded", function () {
+    var batchTagsButton = document.getElementById("inventoryBatchTagsButton");
+    if (batchTagsButton) {
+        batchTagsButton.addEventListener("click", async function () {
+            await window.handleBatchUpdateInventoryTags();
+        });
     }
-    if (newPassword !== confirmPassword) {
-        Showbubble("两次输入的新密码不一致", "#d90000", "#ffffff");
-        return null;
-    }
-
-    submitButton.disabled = true;
-    submitButton.textContent = "提交中";
-    try {
-        const result = await postApi(`${window.url}/api/config/alter_password`, { password: password, newPassword: newPassword });
-        if (!result.result) {
-            await openModal("警告", result.msg || "修改失败");
-            return null;
-        }
-        await openModal("修改成功", result.msg || "访问密码已修改，应用将重启。");
-        window.warehouseWindow.restart();
-        return result;
-    } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "提交修改";
-    }
-};
+});
