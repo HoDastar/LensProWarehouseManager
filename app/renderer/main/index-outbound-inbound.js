@@ -26,7 +26,7 @@ window.loadInboundUploadFileCount = async function loadInboundUploadFileCount() 
     return result.data.length;
 };
 
-window.openOutboundUploadPage = async function openOutboundUploadPage() {
+window.openUploadPage = async function openUploadPage() {
     const result = await window.warehouseBrowser.openLink(`${window.url}/upload.html`);
     if (!result || !result.ok) {
         Showbubble(result && result.message ? result.message : "打开上传页面失败", "#d90000", "#ffffff");
@@ -194,11 +194,13 @@ window.handleSubmitOutboundReport = async function handleSubmitOutboundReport() 
         return null;
     }
 
+    /*
     const attachmentCount = await window.loadOutboundUploadFileCount();
     if (attachmentCount <= 0) {
         Showbubble("请先上传附件", "#d90000", "#ffffff");
         return null;
     }
+    */
 
     submitButton.disabled = true;
     submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>提交中</span>';
@@ -358,6 +360,14 @@ window.handleFinishInboundReport = async function handleFinishInboundReport() {
     if (!confirmed) {
         return null;
     }
+    
+    /*
+    const attachmentCount = await window.loadOutboundUploadFileCount();
+    if (attachmentCount <= 0) {
+        Showbubble("请先上传附件", "#d90000", "#ffffff");
+        return null;
+    }
+    */
 
     finishButton.disabled = true;
     finishButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>完结中</span>';

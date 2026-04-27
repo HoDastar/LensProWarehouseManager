@@ -55,279 +55,435 @@
             </nav>
         </aside>
 
-        <main class="app-content">
-
-            <section class="page-view is-active" id="overviewPage">
-                <h1 class="page-title"><i class="fa-solid fa-chart-simple"></i> 概览</h1>
-                <div class="overview-panel">
-                    <div class="overview-grid">
-                        <div class="overview-card">
-                            <p class="overview-card-value" id="overviewTotalCount">0</p>
-                            <p class="overview-card-title">器材总数</p>
-                            <p class="overview-card-note">当前样例数据总量</p>
-                        </div>
-                        <div class="overview-card">
-                            <p class="overview-card-value" id="overviewInStockCount">0</p>
-                            <p class="overview-card-title">在库中</p>
-                            <p class="overview-card-note">可安排借用</p>
-                        </div>
-                        <div class="overview-card">
-                            <p class="overview-card-value" id="overviewOutStockCount">0</p>
-                            <p class="overview-card-title">已出库</p>
-                            <p class="overview-card-note">需要关注归还</p>
-                        </div>
-                        <div class="overview-card">
-                            <p class="overview-card-value" id="overviewTagCount">0</p>
-                            <p class="overview-card-title">标签数量</p>
-                            <p class="overview-card-note">类型与归属标签</p>
-                        </div>
+        <section class="page-view is-active" id="overviewPage">
+            <h1 class="page-title"><i class="fa-solid fa-chart-simple"></i> 概览</h1>
+            <div class="overview-panel">
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <p class="overview-card-value" id="overviewTotalCount">0</p>
+                        <p class="overview-card-title">器材总数</p>
+                        <p class="overview-card-note">当前样例数据总量</p>
                     </div>
-                    <div class="overview-list">
-                        <p class="overview-list-title">近期动态</p>
-                        <div id="overviewCurrentLogs"></div>
+                    <div class="overview-card">
+                        <p class="overview-card-value" id="overviewInStockCount">0</p>
+                        <p class="overview-card-title">在库中</p>
+                        <p class="overview-card-note">可安排借用</p>
+                    </div>
+                    <div class="overview-card">
+                        <p class="overview-card-value" id="overviewOutStockCount">0</p>
+                        <p class="overview-card-title">已出库</p>
+                        <p class="overview-card-note">需要关注归还</p>
+                    </div>
+                    <div class="overview-card">
+                        <p class="overview-card-value" id="overviewTagCount">0</p>
+                        <p class="overview-card-title">标签数量</p>
+                        <p class="overview-card-note">类型与归属标签</p>
                     </div>
                 </div>
-            </section>
+                <div class="overview-list">
+                    <p class="overview-list-title">近期动态</p>
+                    <div id="overviewCurrentLogs"></div>
+                </div>
+            </div>
+        </section>
 
-            <section class="page-view" id="inventoryPage">
-                <h1 class="page-title"><i class="fa-solid fa-boxes-stacked"></i> 库存浏览</h1>
-                <div class="inventory-panel">
-                    <div class="inventory-filter" id="inventoryTagFilter"></div>
-                    <div class="inventory-batch-actions">
-                        <div class="inventory-batch-title">选中项：</div>
+        <section class="page-view" id="inventoryPage">
+            <h1 class="page-title"><i class="fa-solid fa-boxes-stacked"></i> 库存浏览</h1>
+            <div class="inventory-panel">
+                <div class="inventory-filter" id="inventoryTagFilter"></div>
+                <div class="inventory-batch-actions">
+                    <div class="inventory-batch-title">选中项：</div>
+                    <div class="inventory-batch-row">
+                        <div class="inventory-batch-tags">
+                            <input class="text-input" id="inventoryBatchTagsInput" type="text"
+                                placeholder="批量修改标签，例如：摄影器材 | 学校">
+                            <button class="common-button" type="button" id="inventoryBatchTagsButton">修改标签</button>
+                        </div>
+                    </div>
+                    <div class="inventory-batch-row">
                         <button class="common-button" type="button" id="inventoryAddOutboundButton">添加出库队列</button>
                         <button class="common-button" type="button">下载二维码</button>
                         <!--<button class="common-button common-button-danger" type="button">删除</button>-->
                     </div>
-                    <div class="bordered-table-wrap">
-                        <table class="bordered-table inventory-table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <label class="check-box" aria-label="选择全部">
-                                            <input type="checkbox" id="inventoryCheckAll">
-                                            <span class="check-box-mark"></span>
-                                        </label>
-                                    </th>
-                                    <th>项目ID</th>
-                                    <th>项目</th>
-                                    <th>缩略图</th>
-                                    <th>标配清单</th>
-                                    <th>标签</th>
-                                    <th>备注</th>
-                                    <th>状态</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryTableBody"></tbody>
-                        </table>
+                </div>
+                <div class="bordered-table-wrap">
+                    <table class="bordered-table inventory-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="check-box" aria-label="选择全部">
+                                        <input type="checkbox" id="inventoryCheckAll">
+                                        <span class="check-box-mark"></span>
+                                    </label>
+                                </th>
+                                <th>项目ID</th>
+                                <th>项目</th>
+                                <th>缩略图</th>
+                                <th>标配清单</th>
+                                <th>标签</th>
+                                <th>备注</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="inventory-footer">
+                    <div class="inventory-pagination" id="inventoryPagination"></div>
+                    <div class="inventory-size-group" id="inventorySizeGroup"></div>
+                    <button class="common-button" type="button" id="inventoryRefreshButton">刷新</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="outboundListPage">
+            <h1 class="page-title"><i class="fa-solid fa-clipboard-list"></i> 订单列表</h1>
+            <div class="inventory-panel">
+                <div class="bordered-table-wrap">
+                    <table class="bordered-table outbound-report-table">
+                        <thead>
+                            <tr>
+                                <th>订单ID</th>
+                                <th>用户</th>
+                                <th>出库总量</th>
+                                <th>剩余天数</th>
+                                <th>备注</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="outboundReportTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="inventory-footer">
+                    <div class="inventory-pagination" id="outboundReportPagination"></div>
+                    <div class="inventory-size-group" id="outboundReportSizeGroup"></div>
+                    <button class="common-button" type="button" id="outboundReportRefreshButton">刷新</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="outboundPage">
+            <h1 class="page-title"><i class="fa-solid fa-arrow-up-from-bracket"></i> 出库</h1>
+            <div class="form-layout">
+                <div>
+                    <h2 class="form-section-title">通过项目ID添加</h2>
+                    <div class="form-row">
+                        <div>
+                            <p class="form-label-title">项目ID</p>
+                            <p class="form-label-desc">输入库存项目 ID 后添加到出库队列。</p>
+                        </div>
+                        <input class="text-input" id="outboundQueryIdInput" type="text"
+                            placeholder="例如：NO839514874219296563">
                     </div>
-                    <div class="inventory-footer">
-                        <div class="inventory-pagination" id="inventoryPagination"></div>
-                        <div class="inventory-size-group" id="inventorySizeGroup"></div>
-                        <button class="common-button" type="button" id="inventoryRefreshButton">刷新</button>
+                    <div class="form-submit">
+                        <button class="common-button" id="outboundQuerySubmitButton" type="button">添加</button>
                     </div>
                 </div>
-            </section>
-            <section class="page-view" id="outboundListPage">
-                <h1 class="page-title"><i class="fa-solid fa-clipboard-list"></i> 订单列表</h1>
-                <div class="inventory-panel">
-                    <div class="bordered-table-wrap">
-                        <table class="bordered-table outbound-report-table">
-                            <thead>
-                                <tr>
-                                    <th>订单ID</th>
-                                    <th>用户</th>
-                                    <th>出库总量</th>
-                                    <th>剩余天数</th>
-                                    <th>备注</th>
-                                    <th>状态</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="outboundReportTableBody"></tbody>
-                        </table>
-                    </div>
-                    <div class="inventory-footer">
-                        <div class="inventory-pagination" id="outboundReportPagination"></div>
-                        <div class="inventory-size-group" id="outboundReportSizeGroup"></div>
-                        <button class="common-button" type="button" id="outboundReportRefreshButton">刷新</button>
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">上传文件</h2>
+                    <div class="outbound-upload-panel">
+                        <div>
+                            <p class="form-label-title">队列中的文件数</p>
+                            <p class="outbound-upload-count" id="outboundUploadFileCount">0</p>
+                        </div>
+                        <div class="outbound-upload-actions">
+                            <button class="common-button" id="outboundUploadOpenButton" type="button">上传</button>
+                            <button class="common-button" id="outboundUploadRefreshButton" type="button">刷新</button>
+                        </div>
                     </div>
                 </div>
-            </section>
-            <section class="page-view" id="outboundPage">
-                <h1 class="page-title"><i class="fa-solid fa-arrow-up-from-bracket"></i> 出库</h1>
-                <div class="form-layout">
-                    <div>
-                        <h2 class="form-section-title">通过项目ID添加</h2>
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">项目ID</p>
-                                <p class="form-label-desc">输入库存项目 ID 后添加到出库队列。</p>
-                            </div>
-                            <input class="text-input" id="outboundQueryIdInput" type="text"
-                                placeholder="例如：NO839514874219296563">
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">信息填写</h2>
+                    <div class="compact-form">
+                        <div class="compact-form-row">
+                            <label class="compact-field">
+                                <span class="compact-label">姓名</span>
+                                <input class="text-input" id="outboundUsernameInput" type="text" placeholder="请输入姓名">
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">电话号码</span>
+                                <input class="text-input" id="outboundTelInput" type="tel" placeholder="请输入电话号码">
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">截止日期</span>
+                                <input class="text-input" id="outboundEndDateInput" type="date">
+                            </label>
                         </div>
-                        <div class="form-submit">
-                            <button class="common-button" id="outboundQuerySubmitButton" type="button">添加</button>
+                        <div class="compact-form-row">
+                            <label class="compact-field is-wide">
+                                <span class="compact-label">备注</span>
+                                <textarea class="textarea-input" id="outboundNoteInput" placeholder="可空"></textarea>
+                            </label>
                         </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">上传文件</h2>
-                        <div class="outbound-upload-panel">
-                            <div>
-                                <p class="form-label-title">队列中的文件数</p>
-                                <p class="outbound-upload-count" id="outboundUploadFileCount">0</p>
-                            </div>
-                            <div class="outbound-upload-actions">
-                                <button class="common-button" id="outboundUploadOpenButton" type="button">上传</button>
-                                <button class="common-button" id="outboundUploadRefreshButton" type="button">刷新</button>
-                            </div>
+                        <div class="compact-form-actions">
+                            <button class="common-button" id="outboundSubmitButton"
+                                type="button"><span>提交出库</span></button>
+                            <button class="common-button" id="outboundClearButton" type="button">清空队列</button>
                         </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">信息填写</h2>
-                        <div class="compact-form">
-                            <div class="compact-form-row">
-                                <label class="compact-field">
-                                    <span class="compact-label">姓名</span>
-                                    <input class="text-input" id="outboundUsernameInput" type="text"
-                                        placeholder="请输入姓名">
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">电话号码</span>
-                                    <input class="text-input" id="outboundTelInput" type="tel" placeholder="请输入电话号码">
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">截止日期</span>
-                                    <input class="text-input" id="outboundEndDateInput" type="date">
-                                </label>
-                            </div>
-                            <div class="compact-form-row">
-                                <label class="compact-field is-wide">
-                                    <span class="compact-label">备注</span>
-                                    <textarea class="textarea-input" id="outboundNoteInput" placeholder="可空"></textarea>
-                                </label>
-                            </div>
-                            <div class="compact-form-actions">
-                                <button class="common-button" id="outboundSubmitButton"
-                                    type="button"><span>提交出库</span></button>
-                                <button class="common-button" id="outboundClearButton" type="button">清空队列</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">出库队列</h2>
-                        <div class="outbound-queue" id="outboundQueueList"></div>
                     </div>
                 </div>
-            </section>
-            <section class="page-view" id="inboundPage">
-                <h1 class="page-title"><i class="fa-solid fa-arrow-right-to-bracket"></i> 入库</h1>
-                <div class="form-layout">
-                    <div>
-                        <h2 class="form-section-title">通过订单ID查询</h2>
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">订单ID</p>
-                                <p class="form-label-desc">输入出库订单 ID 后加载订单信息。</p>
-                            </div>
-                            <input class="text-input" id="inboundQueryOrderIdInput" type="text"
-                                placeholder="例如：OR839514874219296563">
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">出库队列</h2>
+                    <div class="outbound-queue" id="outboundQueueList"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="inboundPage">
+            <h1 class="page-title"><i class="fa-solid fa-arrow-right-to-bracket"></i> 入库</h1>
+            <div class="form-layout">
+                <div>
+                    <h2 class="form-section-title">通过订单ID查询</h2>
+                    <div class="form-row">
+                        <div>
+                            <p class="form-label-title">订单ID</p>
+                            <p class="form-label-desc">输入出库订单 ID 后加载订单信息。</p>
                         </div>
-                        <div class="form-submit">
-                            <button class="common-button" id="inboundQuerySubmitButton" type="button">查询</button>
-                        </div>
+                        <input class="text-input" id="inboundQueryOrderIdInput" type="text"
+                            placeholder="例如：OR839514874219296563">
                     </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">上传文件</h2>
-                        <div class="outbound-upload-panel">
-                            <div>
-                                <p class="form-label-title">队列中的文件数</p>
-                                <p class="outbound-upload-count" id="inboundUploadFileCount">0</p>
-                            </div>
-                            <div class="outbound-upload-actions">
-                                <button class="common-button" id="inboundUploadOpenButton" type="button">上传</button>
-                                <button class="common-button" id="inboundUploadRefreshButton" type="button">刷新</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">订单信息</h2>
-                        <div class="compact-form">
-                            <div class="compact-form-row">
-                                <label class="compact-field">
-                                    <span class="compact-label">订单ID</span>
-                                    <span class="inbound-readonly-value" id="inboundOrderIdText">-</span>
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">姓名</span>
-                                    <span class="inbound-readonly-value" id="inboundUsernameText">-</span>
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">电话号码</span>
-                                    <span class="inbound-readonly-value" id="inboundTelText">-</span>
-                                </label>
-                            </div>
-                            <div class="compact-form-row">
-                                <label class="compact-field">
-                                    <span class="compact-label">开始日期</span>
-                                    <span class="inbound-readonly-value" id="inboundStartDateText">-</span>
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">截止日期</span>
-                                    <span class="inbound-readonly-value" id="inboundEndDateText">-</span>
-                                </label>
-                                <label class="compact-field">
-                                    <span class="compact-label">状态</span>
-                                    <span class="inbound-readonly-value" id="inboundStatusText">-</span>
-                                </label>
-                            </div>
-                            <div class="compact-form-row">
-                                <label class="compact-field is-wide">
-                                    <span class="compact-label">备注</span>
-                                    <textarea class="textarea-input" id="inboundNoteInput" placeholder="可空"></textarea>
-                                </label>
-                            </div>
-                            <div class="compact-form-actions">
-                                <button class="common-button" id="inboundFinishButton"
-                                    type="button"><span>完结订单</span></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">入库队列</h2>
-                        <div class="outbound-queue" id="inboundQueueList"></div>
+                    <div class="form-submit">
+                        <button class="common-button" id="inboundQuerySubmitButton" type="button">查询</button>
                     </div>
                 </div>
-            </section>
-            <section class="page-view" id="addPage">
-                <h1 class="page-title"><i class="fa-solid fa-plus"></i> 新增项目</h1>
-                <div class="form-layout">
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">上传文件</h2>
+                    <div class="outbound-upload-panel">
+                        <div>
+                            <p class="form-label-title">队列中的文件数</p>
+                            <p class="outbound-upload-count" id="inboundUploadFileCount">0</p>
+                        </div>
+                        <div class="outbound-upload-actions">
+                            <button class="common-button" id="inboundUploadOpenButton" type="button">上传</button>
+                            <button class="common-button" id="inboundUploadRefreshButton" type="button">刷新</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">订单信息</h2>
+                    <div class="compact-form">
+                        <div class="compact-form-row">
+                            <label class="compact-field">
+                                <span class="compact-label">订单ID</span>
+                                <span class="inbound-readonly-value" id="inboundOrderIdText">-</span>
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">姓名</span>
+                                <span class="inbound-readonly-value" id="inboundUsernameText">-</span>
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">电话号码</span>
+                                <span class="inbound-readonly-value" id="inboundTelText">-</span>
+                            </label>
+                        </div>
+                        <div class="compact-form-row">
+                            <label class="compact-field">
+                                <span class="compact-label">开始日期</span>
+                                <span class="inbound-readonly-value" id="inboundStartDateText">-</span>
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">截止日期</span>
+                                <span class="inbound-readonly-value" id="inboundEndDateText">-</span>
+                            </label>
+                            <label class="compact-field">
+                                <span class="compact-label">状态</span>
+                                <span class="inbound-readonly-value" id="inboundStatusText">-</span>
+                            </label>
+                        </div>
+                        <div class="compact-form-row">
+                            <label class="compact-field is-wide">
+                                <span class="compact-label">备注</span>
+                                <textarea class="textarea-input" id="inboundNoteInput" placeholder="可空"></textarea>
+                            </label>
+                        </div>
+                        <div class="compact-form-actions">
+                            <button class="common-button" id="inboundFinishButton"
+                                type="button"><span>完结订单</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">入库队列</h2>
+                    <div class="outbound-queue" id="inboundQueueList"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="addPage">
+            <h1 class="page-title"><i class="fa-solid fa-plus"></i> 新增项目</h1>
+            <div class="form-layout">
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">项目</p>
+                        <p class="form-label-desc">必填，不超过 100 字。</p>
+                    </div>
+                    <input class="text-input" id="addItemNameInput" type="text" maxlength="100" placeholder="请输入项目名称">
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">物品照片</p>
+                        <p class="form-label-desc">单张，可留空，图片大小不超过 50MB。</p>
+                    </div>
+                    <label class="input-file">
+                        <span class="common-button input-file-button">选择文件</span>
+                        <span class="input-file-display" id="addPhotoInputDisplay">请上传文件</span>
+                        <input id="addPhotoInput" type="file" accept="image/*">
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">配件</p>
+                        <p class="form-label-desc">必填，使用 | 分割，每项不超过 50 字。</p>
+                    </div>
+                    <textarea class="textarea-input" id="addItemListInput" placeholder="例如：电池 | 充电器 | 收纳包"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">标签</p>
+                        <p class="form-label-desc">必填，使用 | 分割，每项不超过 20 字。</p>
+                    </div>
+                    <input class="text-input" id="addItemTagsInput" type="text" placeholder="例如：摄影器材 | 学校">
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">备注</p>
+                        <p class="form-label-desc">可空，不超过 100 字。</p>
+                    </div>
+                    <input class="text-input" id="addItemNoteInput" type="text" maxlength="100" placeholder="请输入备注信息">
+                </div>
+
+                <div class="form-submit">
+                    <button class="common-button" id="addInventorySubmitButton" type="button"><span>提交</span></button>
+                    <button class="common-button" id="cleanInventorySubmitButton" type="button">清除</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="aboutPage">
+            <h1 class="page-title"><i class="fa-solid fa-circle-info"></i> 关于</h1>
+            <div class="about-panel">
+                <img class="about-icon" src="../icon.png" alt="软件图标">
+                <h2 class="about-name">LensPro库管系统</h2>
+                <p class="about-meta">当前版本：<span id="aboutVersionText">-</span></p>
+                <p class="about-meta">Build：<span id="aboutBuildText">-</span></p>
+            </div>
+            <div class="about-changelog">
+                <h2 class="about-changelog-title">版本日志</h2>
+                <div class="about-changelog-list" id="aboutChangelogList"></div>
+            </div>
+        </section>
+
+        <section class="page-view" id="passwordPage">
+            <h1 class="page-title"><i class="fa-solid fa-key"></i> 修改密码</h1>
+            <div class="form-layout">
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">当前密码</p>
+                        <p class="form-label-desc">请输入当前访问密码。</p>
+                    </div>
+                    <input class="text-input" id="oldPasswordInput" type="password" autocomplete="current-password"
+                        placeholder="请输入当前密码">
+                </div>
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">新密码</p>
+                        <p class="form-label-desc">请输入新的访问密码。</p>
+                    </div>
+                    <input class="text-input" id="newPasswordInput" type="password" autocomplete="new-password"
+                        placeholder="请输入新密码">
+                </div>
+                <div class="form-row">
+                    <div>
+                        <p class="form-label-title">确认新密码</p>
+                        <p class="form-label-desc">请再次输入新的访问密码。</p>
+                    </div>
+                    <input class="text-input" id="confirmPasswordInput" type="password" autocomplete="new-password"
+                        placeholder="请再次输入新密码">
+                </div>
+                <div class="form-submit">
+                    <button class="common-button" id="passwordSubmitButton" type="button">提交修改</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-view" id="modifyPage">
+            <h1 class="page-title"><i class="fa-solid fa-pen-to-square"></i> 修改项目</h1>
+            <div class="form-layout">
+                <div>
+                    <h2 class="form-section-title">通过项目ID查询</h2>
+                    <div class="form-row">
+                        <div>
+                            <p class="form-label-title">项目ID</p>
+                            <p class="form-label-desc">输入库存项目 ID 后加载当前信息。</p>
+                        </div>
+                        <input class="text-input" id="modifyQueryIdInput" type="text"
+                            placeholder="例如：NO839514874219296563">
+                    </div>
+                    <div class="form-submit">
+                        <button class="common-button" id="modifyQuerySubmitButton" type="button">查询</button>
+                        <button class="common-button" id="cleanModifyInfo" type="button">清除</button>
+                    </div>
+                </div>
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">修改出入库</h2>
+                    <div class="form-row">
+                        <div>
+                            <p class="form-label-title">状态</p>
+                            <p class="form-label-desc">修改项目的状态。</p>
+                        </div>
+                        <div class="radio-card-group">
+                            <label class="radio-card">
+                                <input type="radio" name="modifyStatusRadio" value="0" id="modifyStatusInRadio">
+                                <span>入库</span>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="modifyStatusRadio" value="1" id="modifyStatusOutRadio">
+                                <span>出库</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-submit">
+                        <button class="common-button" id="modifyStatusSubmitButton" type="button">提交状态</button>
+                    </div>
+                </div>
+
+                <div class="hr"></div>
+
+                <div>
+                    <h2 class="form-section-title">修改信息</h2>
                     <div class="form-row">
                         <div>
                             <p class="form-label-title">项目</p>
                             <p class="form-label-desc">必填，不超过 100 字。</p>
                         </div>
-                        <input class="text-input" id="addItemNameInput" type="text" maxlength="100"
+                        <input class="text-input" id="modifyItemNameInput" type="text" maxlength="100"
                             placeholder="请输入项目名称">
                     </div>
 
@@ -338,8 +494,8 @@
                         </div>
                         <label class="input-file">
                             <span class="common-button input-file-button">选择文件</span>
-                            <span class="input-file-display" id="addPhotoInputDisplay">请上传文件</span>
-                            <input id="addPhotoInput" type="file" accept="image/*">
+                            <span class="input-file-display" id="modifyPhotoInputDisplay">请上传文件</span>
+                            <input id="modifyPhotoInput" type="file" accept="image/*">
                         </label>
                     </div>
 
@@ -348,7 +504,7 @@
                             <p class="form-label-title">配件</p>
                             <p class="form-label-desc">必填，使用 | 分割，每项不超过 50 字。</p>
                         </div>
-                        <textarea class="textarea-input" id="addItemListInput"
+                        <textarea class="textarea-input" id="modifyItemListInput"
                             placeholder="例如：电池 | 充电器 | 收纳包"></textarea>
                     </div>
 
@@ -357,7 +513,7 @@
                             <p class="form-label-title">标签</p>
                             <p class="form-label-desc">必填，使用 | 分割，每项不超过 20 字。</p>
                         </div>
-                        <input class="text-input" id="addItemTagsInput" type="text" placeholder="例如：摄影器材 | 学校">
+                        <input class="text-input" id="modifyItemTagsInput" type="text" placeholder="例如：摄影器材 | 学校">
                     </div>
 
                     <div class="form-row">
@@ -365,160 +521,17 @@
                             <p class="form-label-title">备注</p>
                             <p class="form-label-desc">可空，不超过 100 字。</p>
                         </div>
-                        <input class="text-input" id="addItemNoteInput" type="text" maxlength="100"
+                        <input class="text-input" id="modifyItemNoteInput" type="text" maxlength="100"
                             placeholder="请输入备注信息">
                     </div>
 
                     <div class="form-submit">
-                        <button class="common-button" id="addInventorySubmitButton"
-                            type="button"><span>提交</span></button>
-                        <button class="common-button" id="cleanInventorySubmitButton" type="button">清除</button>
+                        <button class="common-button" id="modifyInfoSubmitButton"
+                            type="button"><span>提交修改</span></button>
                     </div>
                 </div>
-            </section>
-            <section class="page-view" id="aboutPage">
-                <h1 class="page-title"><i class="fa-solid fa-circle-info"></i> 关于</h1>
-                <div class="about-panel">
-                    <img class="about-icon" src="../icon.png" alt="软件图标">
-                    <h2 class="about-name">LensPro库管系统</h2>
-                    <p class="about-meta">当前版本：<span id="aboutVersionText">-</span></p>
-                    <p class="about-meta">Build：<span id="aboutBuildText">-</span></p>
-                </div>
-            </section>
-            <section class="page-view" id="passwordPage">
-                <h1 class="page-title"><i class="fa-solid fa-key"></i> 修改密码</h1>
-                <div class="form-layout">
-                    <div class="form-row">
-                        <div>
-                            <p class="form-label-title">当前密码</p>
-                            <p class="form-label-desc">请输入当前访问密码。</p>
-                        </div>
-                        <input class="text-input" id="oldPasswordInput" type="password" autocomplete="current-password"
-                            placeholder="请输入当前密码">
-                    </div>
-                    <div class="form-row">
-                        <div>
-                            <p class="form-label-title">新密码</p>
-                            <p class="form-label-desc">请输入新的访问密码。</p>
-                        </div>
-                        <input class="text-input" id="newPasswordInput" type="password" autocomplete="new-password"
-                            placeholder="请输入新密码">
-                    </div>
-                    <div class="form-row">
-                        <div>
-                            <p class="form-label-title">确认新密码</p>
-                            <p class="form-label-desc">请再次输入新的访问密码。</p>
-                        </div>
-                        <input class="text-input" id="confirmPasswordInput" type="password" autocomplete="new-password"
-                            placeholder="请再次输入新密码">
-                    </div>
-                    <div class="form-submit">
-                        <button class="common-button" id="passwordSubmitButton" type="button">提交修改</button>
-                    </div>
-                </div>
-            </section>
-            <section class="page-view" id="modifyPage">
-                <h1 class="page-title"><i class="fa-solid fa-pen-to-square"></i> 修改项目</h1>
-                <div class="form-layout">
-                    <div>
-                        <h2 class="form-section-title">通过项目ID查询</h2>
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">项目ID</p>
-                                <p class="form-label-desc">输入库存项目 ID 后加载当前信息。</p>
-                            </div>
-                            <input class="text-input" id="modifyQueryIdInput" type="text"
-                                placeholder="例如：NO839514874219296563">
-                        </div>
-                        <div class="form-submit">
-                            <button class="common-button" id="modifyQuerySubmitButton" type="button">查询</button>
-                        </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">修改出入库</h2>
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">状态</p>
-                                <p class="form-label-desc">0 为入库，1 为出库。</p>
-                            </div>
-                            <div class="radio-card-group">
-                                <label class="radio-card">
-                                    <input type="radio" name="modifyStatusRadio" value="0" id="modifyStatusInRadio">
-                                    <span>入库</span>
-                                </label>
-                                <label class="radio-card">
-                                    <input type="radio" name="modifyStatusRadio" value="1" id="modifyStatusOutRadio">
-                                    <span>出库</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-submit">
-                            <button class="common-button" id="modifyStatusSubmitButton" type="button">提交状态</button>
-                        </div>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <h2 class="form-section-title">修改信息</h2>
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">项目</p>
-                                <p class="form-label-desc">必填，不超过 100 字。</p>
-                            </div>
-                            <input class="text-input" id="modifyItemNameInput" type="text" maxlength="100"
-                                placeholder="请输入项目名称">
-                        </div>
-
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">物品照片</p>
-                                <p class="form-label-desc">单张，可留空，图片大小不超过 50MB。</p>
-                            </div>
-                            <label class="input-file">
-                                <span class="common-button input-file-button">选择文件</span>
-                                <span class="input-file-display" id="modifyPhotoInputDisplay">请上传文件</span>
-                                <input id="modifyPhotoInput" type="file" accept="image/*">
-                            </label>
-                        </div>
-
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">配件</p>
-                                <p class="form-label-desc">必填，使用 | 分割，每项不超过 50 字。</p>
-                            </div>
-                            <textarea class="textarea-input" id="modifyItemListInput"
-                                placeholder="例如：电池 | 充电器 | 收纳包"></textarea>
-                        </div>
-
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">标签</p>
-                                <p class="form-label-desc">必填，使用 | 分割，每项不超过 20 字。</p>
-                            </div>
-                            <input class="text-input" id="modifyItemTagsInput" type="text" placeholder="例如：摄影器材 | 学校">
-                        </div>
-
-                        <div class="form-row">
-                            <div>
-                                <p class="form-label-title">备注</p>
-                                <p class="form-label-desc">可空，不超过 100 字。</p>
-                            </div>
-                            <input class="text-input" id="modifyItemNoteInput" type="text" maxlength="100"
-                                placeholder="请输入备注信息">
-                        </div>
-
-                        <div class="form-submit">
-                            <button class="common-button" id="modifyInfoSubmitButton"
-                                type="button"><span>提交修改</span></button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+            </div>
+        </section>
     </div>
 
     <script src="./assets/window.js"></script>
@@ -527,7 +540,8 @@
     <script src="./main/index-inventory.js"></script>
     <script src="./main/index-outbound-list.js"></script>
     <script src="./main/index-outbound-inbound.js"></script>
-    <script src="./main/index-add-modify-password.js"></script>
+    <script src="./main/index-add-modify.js"></script>
+    <script src="./main/index-password.js"></script>
     <script src="./main/index.js"></script>
 </body>
 

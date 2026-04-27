@@ -75,17 +75,14 @@ body {
   background: var(--color-gray-100);
 }
 
-.app-content {
+.page-view {
+  display: none;
   flex: 1 1 auto;
   min-width: 0;
   height: 100vh;
   margin-left: 217px;
   padding: 70px 30px 42px;
   overflow-y: auto;
-}
-
-.page-view {
-  display: none;
 }
 
 .page-view.is-active {
@@ -167,8 +164,49 @@ body {
   margin: 0;
   color: var(--color-gray-700);
   font-size: 15px;
-  font-weight: 800;
   line-height: 1.6;
+}
+
+.about-changelog {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+  margin-top: 18px;
+  padding: 18px 0;
+}
+
+.about-changelog-title {
+  margin: 0;
+  color: var(--color-black);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.about-changelog-list {
+  display: grid;
+  gap: 12px;
+}
+
+.about-changelog-item {
+  padding: 14px 0;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.about-changelog-version {
+  margin: 0 0 8px;
+  color: var(--color-black);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.about-changelog-content {
+  margin: 0;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
 }
 
 .home-quick-title,
@@ -385,6 +423,26 @@ body {
   min-width: 1040px;
 }
 
+.outbound-report-table td:nth-child(1),
+.outbound-report-table th:nth-child(1) {
+  width: 60px;
+}
+
+.outbound-report-table td:nth-child(2),
+.outbound-report-table th:nth-child(2) {
+  width: 240px;
+}
+
+.outbound-report-table td:nth-child(8),
+.outbound-report-table th:nth-child(8) {
+  width: 80px;
+}
+
+.outbound-report-table td:nth-child(9),
+.outbound-report-table th:nth-child(9) {
+  width: 110px;
+}
+
 .outbound-report-user {
   display: grid;
   gap: 4px;
@@ -534,17 +592,34 @@ height: 24px;
 }
 
 .inventory-batch-actions {
-  display: flex;
-  align-items: center;
+  display: grid;
   gap: 12px;
   margin: 10px 0 28px;
   padding: 14px 0;
 }
 
+.inventory-batch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .inventory-batch-title {
+  flex: 0 0 auto;
   color: var(--color-black);
   font-size: 18px;
   font-weight: 900;
+}
+
+.inventory-batch-tags {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 360px;
+}
+
+.inventory-batch-tags .text-input {
+  min-width: 280px;
 }
 
 .common-button.common-button-danger {
