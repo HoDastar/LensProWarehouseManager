@@ -1,6 +1,6 @@
 {
   "name": "WarehouseManager",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "license": "ISC",
   "author": "Flare",
@@ -51,7 +51,7 @@
     }
   },
   "devDependencies": {
-    "electron": "file:_electron-37.5.0.tgz",
+    "electron": "^44.3.0",
     "electron-builder": "^26.8.1"
   }
 }

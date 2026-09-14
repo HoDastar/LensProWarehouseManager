@@ -2,13 +2,14 @@ const fs = require("fs");
 const path = require("path");
 const { app } = require("electron");
 
-const VERSION = "0.1.1";
-const BUILD = 1;
+const VERSION = "0.2.0";
+const BUILD = 2;
 const iniPath = path.join(app.getPath('userData'), 'data', 'config.ini');
 const DEFAULT_URL = "http://127.0.0.1:8080";
 
 let token = "";
 
+// 解析INI文件内容为对象
 function parseIni(content) {
   return content.split(/\r?\n/).reduce((config, line) => {
     const trimmed = line.trim();
@@ -30,19 +31,18 @@ function parseIni(content) {
   }, {});
 }
 
-function readIniConfig() {
+function readUrlConfig() {
+  console.log("Reading URL config...");
   if (!fs.existsSync(iniPath)) {
+    fs.mkdirSync(path.dirname(iniPath), { recursive: true });
     fs.writeFileSync(iniPath, `url=${DEFAULT_URL}`, "utf8");
-    return {
-      url: DEFAULT_URL
-    };
+    return DEFAULT_URL;
   }
-
-  return parseIni(fs.readFileSync(iniPath, "utf8"));
+  return parseIni(fs.readFileSync(iniPath, "utf8")).url || DEFAULT_URL;
 }
 
 function getUrl() {
-  return readIniConfig().url || "";
+  return readUrlConfig()|| "";
 }
 
 function setToken(value) {
